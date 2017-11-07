@@ -3,24 +3,24 @@
 #include <fcntl.h>
 #include <unistd.h>
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 #define SZ_BUF 1024
 
-typedef struct *LINE
-{
-	LINE* NEXT;
+typedef struct _LINE{
+	struct _LINE *NEXT;
 	char *text;
 	short type;
 }LINE;
 
-// Test for inline reading and stack
-LINE* HEAD = 0;
-
-void addToText(char *feed, short type)
+void addToText(char *feed, short type, LINE *HEAD)
 {
 	LINE *NEW = (LINE *)malloc(sizeof(LINE));
 	NEW->NEXT = 0; NEW->text = feed;
 	NEW->type = type;
-	if(HEAD -> NEXT = 0)
+	if(HEAD == 0)
 	{
 		HEAD = NEW;
 	}
@@ -34,19 +34,24 @@ void addToText(char *feed, short type)
 		CUR->NEXT = NEW;
 	}
 }
-void displayText(void) // For testing.
+
+void displayText(LINE *HEAD) // For testing.
 {
 	LINE *CUR = HEAD;
-	while(CUR->NEXT != 0)
+	while(CUR != 0)
 	{
 		printf("%s | %d",CUR->text,CUR->type);
 		CUR = CUR->NEXT;
 	}		
 }
 char buf[SZ_BUF];
-char *ReadFile(char *filename)
+LINE *ReadFile(char *filename)
 {
-	int fd;
+	LINE *para = 0;
+
+	int fd,nb;
+	short type = 0; // default is 0 (Description)
+
 	fd = open(filename,O_RDONLY);
 
 	if(fd == -1)
@@ -55,22 +60,20 @@ char *ReadFile(char *filename)
 		return NULL;
 	}	
 	
-	while(nb = read(fd, buf, SZ_BUF));
+	while(nb = read(fd, buf, SZ_BUF))
+	{
+		if(buf[nb] == '\n') // If the 'new line' detected...
+		{
+			int i;
+			if(strncmp(buf,"\\@",3) == 0) type = 1;
+			else type = 0;
+			addToText(buf,type,para);
+		}
+	}
 
 	close(fd);
 
-	return buf;
-}
-void *SeprateFile(char *text)
-{
-	int i;
-	for(i=0;text[i]!=0;i++)
-	{
-		if(text[i]=='\' && text[i+1]=='n')
-		{
-			
-		}
-	}
+	return para;
 }
 int main(int argc, char *argv[])
 {
@@ -80,8 +83,10 @@ int main(int argc, char *argv[])
 		return 0;
 	}
 	
-	char *text = ReadFile(argv[1]);
-	write(0, text, SZ_BUF);
+	LINE *Paragraph = ReadFile(argv[1]);
+
+	displayText(Paragraph);
+		
 	return 0;
 	
 }
