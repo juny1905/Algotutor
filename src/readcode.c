@@ -15,64 +15,68 @@ typedef struct _LINE{
 	short type;
 }LINE;
 
-void addToText(char *feed, short type, LINE *HEAD)
+void addToText(char *feed, short type, LINE **HEAD)
 {
 	LINE *NEW = (LINE *)malloc(sizeof(LINE));
 	NEW->NEXT = 0; NEW->text = feed;
 	NEW->type = type;
-	if(HEAD == 0)
+	if(*HEAD == 0)
 	{
-		HEAD = NEW;
+		*HEAD = NEW;
+		printf("Head Add | Type = %d\n",type);
+		return;
 	}
 	else
 	{
-		LINE *CUR = HEAD;
+		LINE *CUR = *HEAD;
 		while(CUR->NEXT != 0)
 		{
 			CUR = CUR->NEXT;
 		}
 		CUR->NEXT = NEW;
+		printf("Node Add | Type = %d\n",type);
+		return;
 	}
 }
 
-void displayText(LINE *HEAD) // For testing.
+void displayText(LINE **HEAD) // For testing.
 {
-	LINE *CUR = HEAD;
+	LINE *CUR = *HEAD;
 	while(CUR != 0)
 	{
-		printf("%s | %d",CUR->text,CUR->type);
+		printf("Line : %s | Type : %d\n",CUR->text,CUR->type);
 		CUR = CUR->NEXT;
 	}		
 }
-char buf[SZ_BUF];
 LINE *ReadFile(char *filename)
 {
 	LINE *para = 0;
 
-	int fd,nb;
+	FILE *infile;
+	int line_n, i;
+	char line_buf[SZ_BUF];
 	short type = 0; // default is 0 (Description)
 
-	fd = open(filename,O_RDONLY);
+	infile = fopen(filename,"r");
 
-	if(fd == -1)
+	if(!infile)
 	{
 		perror("Algotutor :");
 		return NULL;
 	}	
 	
-	while(nb = read(fd, buf, SZ_BUF))
+	// How do I read the text line by line ?
+	line_n =0 ;
+	
+	while(fgets(line_buf,sizeof(line_buf), infile))
 	{
-		if(buf[nb] == '\n') // If the 'new line' detected...
-		{
-			int i;
-			if(strncmp(buf,"\\@",3) == 0) type = 1;
-			else type = 0;
-			addToText(buf,type,para);
-		}
+		++line_n;	
+		if(strncmp(line_buf,"\\@",3) == 0) type = 1;
+		else type = 0;
+
+		addToText(line_buf,type,&para);
+		
 	}
-
-	close(fd);
-
 	return para;
 }
 int main(int argc, char *argv[])
@@ -85,7 +89,7 @@ int main(int argc, char *argv[])
 	
 	LINE *Paragraph = ReadFile(argv[1]);
 
-	displayText(Paragraph);
+	displayText(&Paragraph);
 		
 	return 0;
 	
