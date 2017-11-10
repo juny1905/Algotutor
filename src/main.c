@@ -1,8 +1,0 @@
-// main
-
-int main(void){
-
-
-}
-
-
