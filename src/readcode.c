@@ -14,34 +14,38 @@ typedef struct _LINE{
 	char *text;
 	short type;
 }LINE;
-
-void addToText(char *feed, short type, LINE **HEAD)
+short isComment(char *line_buf)
+{
+		if(strncmp(line_buf,"//@",3) == 0)
+				return 1;
+		else
+				return 0;
+}
+void addToText(char *feed, short type, LINE *HEAD)
 {
 	LINE *NEW = (LINE *)malloc(sizeof(LINE));
-	NEW->NEXT = 0; NEW->text = feed;
-	NEW->type = type;
-	if(*HEAD == 0)
+	NEW->text = feed;
+	NEW->NEXT = 0; NEW->type = type;
+	if(HEAD == 0)
 	{
-		*HEAD = NEW;
-		printf("Head Add | Type = %d\n",type);
+		HEAD = NEW;
 		return;
 	}
 	else
 	{
-		LINE *CUR = *HEAD;
+		LINE *CUR = HEAD;
 		while(CUR->NEXT != 0)
 		{
 			CUR = CUR->NEXT;
 		}
 		CUR->NEXT = NEW;
-		printf("Node Add | Type = %d\n",type);
 		return;
 	}
 }
 
-void displayText(LINE **HEAD) // For testing.
+void displayText(LINE *HEAD) // For testing.
 {
-	LINE *CUR = *HEAD;
+	LINE *CUR = HEAD;
 	while(CUR != 0)
 	{
 		printf("Line : %s | Type : %d\n",CUR->text,CUR->type);
@@ -50,12 +54,9 @@ void displayText(LINE **HEAD) // For testing.
 }
 LINE *ReadFile(char *filename)
 {
-	LINE *para = 0;
-
+	LINE *para;
 	FILE *infile;
-	int line_n, i;
 	char line_buf[SZ_BUF];
-	short type = 0; // default is 0 (Description)
 
 	infile = fopen(filename,"r");
 
@@ -66,31 +67,18 @@ LINE *ReadFile(char *filename)
 	}	
 	
 	// How do I read the text line by line ?
-	line_n =0 ;
 	
 	while(fgets(line_buf,sizeof(line_buf), infile))
 	{
-		++line_n;	
-		if(strncmp(line_buf,"\\@",3) == 0) type = 1;
-		else type = 0;
-
-		addToText(line_buf,type,&para);
+		addToText(line_buf,isComment(line_buf),para);
 		
 	}
 	return para;
 }
 int main(int argc, char *argv[])
 {
-	if(argc != 2)
-	{
-		perror("Invalid Arguments !");
-		return 0;
-	}
-	
-	LINE *Paragraph = ReadFile(argv[1]);
-
-	displayText(&Paragraph);
-		
+	LINE *TEST = ReadFile(argv[1]);
+	displayText(TEST);
 	return 0;
 	
 }
