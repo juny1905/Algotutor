@@ -21,25 +21,23 @@ short isComment(char *line_buf)
 		else
 				return 0;
 }
-void addToText(char *feed, short type, LINE *HEAD)
+void addToText(char *feed, short type, LINE **HEAD)
 {
 	LINE *NEW = (LINE *)malloc(sizeof(LINE));
 	NEW->text = feed;
 	NEW->NEXT = 0; NEW->type = type;
-	if(HEAD == 0)
+	if((*HEAD) == 0)
 	{
-		HEAD = NEW;
-		return;
+		(*HEAD) = NEW;
 	}
 	else
 	{
-		LINE *CUR = HEAD;
+		LINE *CUR = (*HEAD);
 		while(CUR->NEXT != 0)
 		{
 			CUR = CUR->NEXT;
 		}
 		CUR->NEXT = NEW;
-		return;
 	}
 }
 
@@ -48,7 +46,7 @@ void displayText(LINE *HEAD) // For testing.
 	LINE *CUR = HEAD;
 	while(CUR != 0)
 	{
-		printf("Line : %s | Type : %d\n",CUR->text,CUR->type);
+		printf("Line : %s\nType : %d\n",CUR->text,CUR->type);
 		CUR = CUR->NEXT;
 	}		
 }
@@ -70,14 +68,14 @@ LINE *ReadFile(char *filename)
 	
 	while(fgets(line_buf,sizeof(line_buf), infile))
 	{
-		addToText(line_buf,isComment(line_buf),para);
-		
+		addToText(line_buf,isComment(line_buf),&para);
 	}
 	return para;
 }
 int main(int argc, char *argv[])
 {
-	LINE *TEST = ReadFile(argv[1]);
+	LINE *TEST = (LINE *)malloc(sizeof(LINE));
+	TEST = ReadFile(argv[1]);
 	displayText(TEST);
 	return 0;
 	
