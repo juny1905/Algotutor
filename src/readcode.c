@@ -24,7 +24,8 @@ short isComment(char *line_buf)
 void addToText(char *feed, short type, LINE **HEAD)
 {
 	LINE *NEW = (LINE *)malloc(sizeof(LINE));
-	NEW->text = feed;
+	NEW->text = (char *)malloc(sizeof(feed)+1);
+	strcpy(NEW->text, feed);
 	NEW->NEXT = 0; NEW->type = type;
 	if((*HEAD) == 0)
 	{
@@ -52,7 +53,7 @@ void displayText(LINE *HEAD) // For testing.
 }
 LINE *ReadFile(char *filename)
 {
-	LINE *para;
+	LINE *para = 0;
 	FILE *infile;
 	char line_buf[SZ_BUF];
 
@@ -65,13 +66,15 @@ LINE *ReadFile(char *filename)
 	}	
 	
 	// How do I read the text line by line ?
-	
+
 	while(fgets(line_buf,sizeof(line_buf), infile))
 	{
 		addToText(line_buf,isComment(line_buf),&para);
 	}
+	
 	return para;
 }
+
 int main(int argc, char *argv[])
 {
 	LINE *TEST = (LINE *)malloc(sizeof(LINE));
