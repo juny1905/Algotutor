@@ -46,6 +46,18 @@ void printVerticalLine(int _start_row, int _end_row, int rowMAX, int colMAX, int
 	return;
 }
 
+void printFrame(int rowMAX, int colMAX)
+{	
+	// first Line
+	printHorizonLine(0,0,rowMAX,colMAX,NOMERGED);
+	printVerticalLine(1,rowMAX-6,rowMAX,colMAX,NOMERGED);
+	printHorizonLine(rowMAX-5,0,rowMAX,colMAX,NOMERGED);
+	printVerticalLine(rowMAX-4,rowMAX-1,rowMAX,colMAX,MERGED);
+	// last Line
+	printHorizonLine(rowMAX,0,rowMAX,colMAX,MERGED);
+	return;
+}
+
 int main(int argc, char *argv[])
 {
 	int rowMAX, colMAX;
@@ -54,17 +66,14 @@ int main(int argc, char *argv[])
 
 	system("clear");
 
-	// first Line
-	printHorizonLine(0,0,rowMAX,colMAX,NOMERGED);
-	printVerticalLine(1,rowMAX-6,rowMAX,colMAX,NOMERGED);
-	printHorizonLine(rowMAX-5,0,rowMAX,colMAX,NOMERGED);
-	printVerticalLine(rowMAX-4,rowMAX-1,rowMAX,colMAX,MERGED);
-	// last Line
-	printHorizonLine(rowMAX,0,rowMAX,colMAX,MERGED);
+	printFrame(rowMAX, colMAX);
 
 	while(1)
 	{
-		setCursorPos(0,0);	
+		int key = getchar();
+		setCursorPos(2,2);
+		printf("%d",key);
+		setCursorPos(20,2);
 	}
 
 	return 0;
