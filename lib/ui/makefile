@@ -7,6 +7,7 @@ CFLAGS = -g -Wall -fPIC -c
 	ld -shared -soname=libui.so.1 ./*.o -o libui.so.1.0 -lc
 	ln -s libui.so.1.0 libui.so
 	ln -s libui.so.1.0 libui.so.1
+	cp ./libui.so.1 ../libui.so.1
 
 ./cursor : ./cursor.c
 	$(CC) $(CFLAGS) $<

@@ -56,13 +56,9 @@ int main(int argc, char *argv[])
 
 	// first Line
 	printHorizonLine(0,0,rowMAX,colMAX,NOMERGED);
-
 	printVerticalLine(1,rowMAX-6,rowMAX,colMAX,NOMERGED);
-
 	printHorizonLine(rowMAX-5,0,rowMAX,colMAX,NOMERGED);
-
 	printVerticalLine(rowMAX-4,rowMAX-1,rowMAX,colMAX,MERGED);
-
 	// last Line
 	printHorizonLine(rowMAX,0,rowMAX,colMAX,MERGED);
 
