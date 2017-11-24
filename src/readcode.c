@@ -41,13 +41,20 @@ void addToText(char *feed, short type, LINE **HEAD)
 		CUR->NEXT = NEW;
 	}
 }
-
 void displayText(LINE *HEAD) // For testing.
 {
 	LINE *CUR = HEAD;
 	while(CUR != 0)
 	{
-		printf("Line : %s\nType : %d\n",CUR->text,CUR->type);
+		if(CUR->type == 1)
+		{
+				printf("\x1B[31m");
+		}
+		else
+		{
+				printf("\x1B[0m");
+		}
+		printf("Line : %sType : %d\n",CUR->text,CUR->type);
 		CUR = CUR->NEXT;
 	}		
 }
@@ -78,8 +85,12 @@ LINE *ReadFile(char *filename)
 int main(int argc, char *argv[])
 {
 	LINE *TEST = (LINE *)malloc(sizeof(LINE));
+	if(argc != 2)
+	{
+			fprintf(stderr,"Invalid Argument !\n");
+			return 0;
+	}
 	TEST = ReadFile(argv[1]);
 	displayText(TEST);
-	return 0;
-	
+	return 0;	
 }
