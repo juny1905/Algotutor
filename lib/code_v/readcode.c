@@ -1,19 +1,7 @@
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
+#include "readcode.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
-#define SZ_BUF 1024
-
-typedef struct _LINE{
-	struct _LINE *NEXT;
-	char *text;
-	short type;
-}LINE;
+int i=0; // for line numbering
 short isComment(char *line_buf)
 {
 		if(strncmp(line_buf,"//@",3) == 0)
@@ -27,6 +15,11 @@ void addToText(char *feed, short type, LINE **HEAD)
 	NEW->text = (char *)malloc(sizeof(feed)+1);
 	strcpy(NEW->text, feed);
 	NEW->NEXT = 0; NEW->type = type;
+	if(NEW->type == SRC_LINE) // If the type of line is source
+	{
+		i++;
+	}
+	NEW->line_index = i;
 	if((*HEAD) == 0)
 	{
 		(*HEAD) = NEW;
@@ -46,15 +39,15 @@ void displayText(LINE *HEAD) // For testing.
 	LINE *CUR = HEAD;
 	while(CUR != 0)
 	{
-		if(CUR->type == 1)
+		if(CUR->type == COM_LINE)
 		{
-				printf("\x1B[31m");
+				printf("\x1B[31m"); // Set the line color Red
 		}
 		else
 		{
 				printf("\x1B[0m");
 		}
-		printf("Line : %sType : %d\n",CUR->text,CUR->type);
+		printf("%d : %s",CUR->line_index,CUR->text);
 		CUR = CUR->NEXT;
 	}		
 }
@@ -63,12 +56,12 @@ LINE *ReadFile(char *filename)
 	LINE *para = 0;
 	FILE *infile;
 	char line_buf[SZ_BUF];
+	char file_location[] = "../doc/";
 
-	infile = fopen(filename,"r");
-
+	infile = fopen(strcat(file_location,filename),"r");
 	if(!infile)
 	{
-		perror("Algotutor :");
+		perror("File");
 		return NULL;
 	}	
 	
@@ -80,17 +73,4 @@ LINE *ReadFile(char *filename)
 	}
 	
 	return para;
-}
-
-int main(int argc, char *argv[])
-{
-	LINE *TEST = (LINE *)malloc(sizeof(LINE));
-	if(argc != 2)
-	{
-			fprintf(stderr,"Invalid Argument !\n");
-			return 0;
-	}
-	TEST = ReadFile(argv[1]);
-	displayText(TEST);
-	return 0;	
 }
