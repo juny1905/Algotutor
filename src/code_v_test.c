@@ -10,5 +10,6 @@ int main(int argc, char *argv[])
 	}
 	TEST = ReadFile(argv[1]);
 	displayText(TEST);
+
 	return 0;	
 }

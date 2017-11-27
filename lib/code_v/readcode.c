@@ -1,23 +1,38 @@
 #include "readcode.h"
 
-
 int i=0; // for line numbering
 short isComment(char *line_buf)
 {
 		if(strncmp(line_buf,"//@",3) == 0)
-				return 1;
+		{
+			return 1;
+		}
 		else
-				return 0;
+		{
+			return 0;
+		}
 }
-void addToText(char *feed, short type, LINE **HEAD)
+char *deleteComment(char *line_buf)
+{
+	for(i=0; i<strlen(line_buf); i++)
+	{
+		line_buf[i] = line_buf[i+4];
+	}
+	return line_buf;
+}
+void addToText(char *feed, LINE **HEAD)
 {
 	LINE *NEW = (LINE *)malloc(sizeof(LINE));
 	NEW->text = (char *)malloc(sizeof(feed)+1);
-	strcpy(NEW->text, feed);
-	NEW->NEXT = 0; NEW->type = type;
+	NEW->NEXT = 0; NEW->type = isComment(feed);
 	if(NEW->type == SRC_LINE) // If the type of line is source
-	{
+	{	
+		strcpy(NEW->text, feed);
 		i++;
+	}
+	else // If the line is comment line, then delete "//@"
+	{
+		strcpy(NEW->text, deleteComment(feed));
 	}
 	NEW->line_index = i;
 	if((*HEAD) == 0)
@@ -47,7 +62,7 @@ void displayText(LINE *HEAD) // For testing.
 		{
 				printf("\x1B[0m");
 		}
-		printf("%d : %s",CUR->line_index,CUR->text);
+		printf("%d:%s\n",CUR->line_index,CUR->text);
 		CUR = CUR->NEXT;
 	}		
 }
@@ -69,7 +84,8 @@ LINE *ReadFile(char *filename)
 
 	while(fgets(line_buf,sizeof(line_buf), infile))
 	{
-		addToText(line_buf,isComment(line_buf),&para);
+		line_buf[strlen(line_buf)-1] = 0;
+		addToText(line_buf,&para);
 	}
 	
 	return para;

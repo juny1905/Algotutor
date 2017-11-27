@@ -23,8 +23,8 @@ typedef struct _LINE{
 }LINE;
 
 short isComment(char *line_buf);
-void addToText(char *feed, short type, LINE **HEAD);
+void addToText(char *feed, LINE **HEAD);
 void displayText(LINE *HEAD);
 LINE *ReadFile(char *filename);
-
+char *deleteComment(char *line_buf);
 #endif // CODE_VIEW_H
