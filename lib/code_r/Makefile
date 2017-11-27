@@ -2,8 +2,8 @@
 CC = gcc
 CFLAGS = -g -Wall
 OBJFILES = readcode.o
-INCLUDE = ../../inc/code_v
-OUTPUT = libcodev.a
+INCLUDE = ../../inc/code_r
+OUTPUT = libcoder.a
 
 $(OUTPUT): $(OBJFILES)
 	ar rv $(OUTPUT) $(OBJFILES)
@@ -12,4 +12,4 @@ $(OUTPUT): $(OBJFILES)
 clean:
 	sudo rm *.o $(OUTPUT)
 info:
-	nm libcodev.a
+	nm libcoder.a

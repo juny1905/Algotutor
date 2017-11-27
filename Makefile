@@ -1,5 +1,5 @@
 .PHONY: all clean info
-DIRS = lib/code_v src
+DIRS = lib/code_r src
 
 all:
 	@for d in $(DIRS); \

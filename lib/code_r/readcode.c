@@ -26,9 +26,9 @@ void addToText(char *feed, LINE **HEAD)
 	NEW->text = (char *)malloc(sizeof(feed)+1);
 	NEW->NEXT = 0; NEW->type = isComment(feed);
 	if(NEW->type == SRC_LINE) // If the type of line is source
-	{	
+	{
+		++i;	
 		strcpy(NEW->text, feed);
-		i++;
 	}
 	else // If the line is comment line, then delete "//@"
 	{
