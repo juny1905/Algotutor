@@ -3,6 +3,10 @@
 #include <ncurses.h>
 #include <curses.h>
 
+#define CODE_VIEW_PART 0
+#define SIMUL_VIEW_PART 1
+#define COMMENT_PART 2
+
 void init_ui(void)
 {
 	initscr();
@@ -10,6 +14,42 @@ void init_ui(void)
 	raw();
 	keypad(stdscr, TRUE);
 	noecho();
+	return;
+}
+
+void clearWorkspace(int _maxRow, int _maxCol, int _option)
+{
+	if( _option == CODE_VIEW_PART )
+	{
+		for(int i=1; i<(_maxRow-5); i++)
+		{
+			for(int j=1; j<(_maxCol/2); j++)
+			{
+				mvaddch(i,j,' ');
+			}
+		}
+	}
+	else if( _option == SIMUL_VIEW_PART )
+	{
+		for(int i=1; i<(_maxRow-5); i++)
+		{
+			for(int j=(_maxCol/2); j<(_maxCol-1); j++)
+			{
+				mvaddch(i,j,' ');
+			}
+		}
+	}
+	else if( _option == COMMENT_PART )
+	{
+		for(int i=(_maxRow-4); i<(_maxRow-1); i++)
+		{
+			for(int j=1; i<(_maxCol-1); j++)
+			{
+				mvaddch(i,j,' ');
+			}
+		}
+	}
+	
 	return;
 }
 
@@ -60,6 +100,7 @@ int main(void)
 	int key = -1;
 	int maxRow = 0;
 	int maxCol = 0;
+	int cursorCol = 3;
 
 	/* Curses Initializations */
 	init_ui();
@@ -70,11 +111,17 @@ int main(void)
 	/* Set the Background And Fonts Color */
 	assume_default_colors(COLOR_WHITE,COLOR_BLACK);
 	
+	/* Show up interface Frame */
 	printFrame(maxRow, maxCol);
+
+	mvaddstr(4,2,"Algotutor");
 
 	while((key = getch()) != '#')
 	{
-		
+		if( key == 'a' )
+		{
+			clearWorkspace(maxRow,maxCol,CODE_VIEW_PART);
+		}
 	}
 
 	/* Exit */
