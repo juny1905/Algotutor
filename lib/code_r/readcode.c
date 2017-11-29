@@ -71,9 +71,8 @@ LINE *ReadFile(char *filename)
 	LINE *para = 0;
 	FILE *infile;
 	char line_buf[SZ_BUF];
-	char file_location[] = "../doc/";
 
-	infile = fopen(strcat(file_location,filename),"r");
+	infile = fopen(filename,"r");
 	if(!infile)
 	{
 		perror("File");
