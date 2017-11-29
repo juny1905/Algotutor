@@ -98,6 +98,23 @@ void printFrame(int _maxRow, int _maxCol)
 	}
 }
 
+void mvaddstr_att(int _y, int _x, const char *_str, int _att)
+{
+	int i=0;
+
+	while(TRUE)
+	{
+		if(*(_str+i) == 0)
+		{
+			break;
+		}
+		mvaddch(_y, _x+i, *(_str+i) | _att);
+		i++;
+	}
+
+	return;
+}
+
 void showMenu(int _maxRow, int _maxCol, int _menuCur, int _categoryNum, char *_menu[][5])
 {
 	/*
@@ -117,7 +134,15 @@ void showMenu(int _maxRow, int _maxCol, int _menuCur, int _categoryNum, char *_m
 
 	for(int i=0; i<5; i++)
 	{
-		mvaddstr(4+(i*2),4,(char *)_menu[_categoryNum][i]);
+		if(i == 0)
+		{
+			mvaddstr_att(4+(i*2),4, \
+			(char *)_menu[_categoryNum][i], A_BOLD);
+		}
+		else
+		{
+			mvaddstr(4+(i*2),4,(char *)_menu[_categoryNum][i]);
+		}
 	}
 
 	return;
@@ -130,11 +155,12 @@ int checkMenuLength(int _categoryNum, char *_menu[][5])
 
 int main(void)
 {
-	int key = -1;
+	wchar_t key = -1;
 	int maxRow = 0;
 	int maxCol = 0;
 	int cursorCol = 3;
 	int categoryNum = 0;
+	int maxCat = 5;
 	int menuCur = 0;
 	int maxMenu = 5;
 	
@@ -153,13 +179,13 @@ int main(void)
 	getmaxyx(stdscr,maxRow,maxCol);
 
 	/* Set the Background And Fonts Color */
-	assume_default_colors(COLOR_WHITE,COLOR_BLACK);
+	assume_default_colors(COLOR_YELLOW,COLOR_BLUE);
 	
 	/* Show up interface Frame */
 	printFrame(maxRow, maxCol);
 	showMenu(maxRow,maxCol,menuCur,categoryNum,menu);
 	
-	while((key = getch()) != '#')
+	while((key = getch()) != 27)
 	{
 		switch(key)
 		{
@@ -174,6 +200,10 @@ int main(void)
 					break;
 
 			case KEY_DOWN:	menuCur = (menuCur + 1)%maxMenu;
+					break;
+
+			case '\n':	categoryNum = (categoryNum+1)%maxCat;
+					menuCur = 0;
 					break;
 		}
 
