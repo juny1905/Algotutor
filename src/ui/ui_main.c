@@ -1,7 +1,10 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <ncurses.h>
 #include <curses.h>
+#include <stddef.h>
+#include <wchar.h>
 
 #define CODE_VIEW_PART 0
 #define SIMUL_VIEW_PART 1
@@ -95,12 +98,53 @@ void printFrame(int _maxRow, int _maxCol)
 	}
 }
 
+void showMenu(int _maxRow, int _maxCol, int _menuCur, int _categoryNum, char *_menu[][5])
+{
+	/*
+	char *menu[5][5] = {
+		{"Algotutor - v.1.0.0", "1. Start", "2. End", 0,0},
+		{"Select category","1. scanf and printf","2. if","3. for loop","4. nested for loop"},
+		{0,0,0,0,0},
+		{0,0,0,0,0},
+		{0,0,0,0,0}
+	};
+	*/
+
+	clearWorkspace(_maxRow,_maxCol,CODE_VIEW_PART);
+	
+	//mvadd_wch(4+(_menuCur*2),3,0x25B6);
+	mvaddch(4+(_menuCur*2),3,'>');
+
+	for(int i=0; i<5; i++)
+	{
+		mvaddstr(4+(i*2),4,(char *)_menu[_categoryNum][i]);
+	}
+
+	return;
+}
+
+int checkMenuLength(int _categoryNum, char *_menu[][5])
+{
+
+}
+
 int main(void)
 {
 	int key = -1;
 	int maxRow = 0;
 	int maxCol = 0;
 	int cursorCol = 3;
+	int categoryNum = 0;
+	int menuCur = 0;
+	int maxMenu = 5;
+	
+	char *menu[5][5] = {
+		{"Algotutor - v.1.0.0", "1. Start", "2. End", 0,0},
+		{"Select category","1. scanf and printf","2. if","3. for loop","4. nested for loop"},
+		{0,0,0,0,0},
+		{0,0,0,0,0},
+		{0,0,0,0,0}
+	};
 
 	/* Curses Initializations */
 	init_ui();
@@ -113,11 +157,29 @@ int main(void)
 	
 	/* Show up interface Frame */
 	printFrame(maxRow, maxCol);
-
-	mvaddstr(4,2,"Algotutor");
-
+	showMenu(maxRow,maxCol,menuCur,categoryNum,menu);
+	
 	while((key = getch()) != '#')
 	{
+		switch(key)
+		{
+			case KEY_UP:	if((menuCur - 1) < 0)
+					{
+						menuCur = maxMenu - 1;
+					}
+					else
+					{
+						menuCur--;
+					}
+					break;
+
+			case KEY_DOWN:	menuCur = (menuCur + 1)%maxMenu;
+					break;
+		}
+
+		showMenu(maxRow,maxCol,menuCur,categoryNum,menu);
+
+		// for debugging
 		if( key == 'a' )
 		{
 			clearWorkspace(maxRow,maxCol,CODE_VIEW_PART);
