@@ -21,8 +21,18 @@ fi
 echo "[set] library directory"
 
 echo $(pwd)/lib/ > /etc/ld.so.conf.d/algotutor.conf
-LD_LIBRARY_PATH=$(pwd)/lib/:$LD_LIBRARY_PATH
+ldconfig
+
+# set the Environment variable 
+# Not used
+:<<'END'
+LD_LIBRARY_PATH="$(pwd)/lib/:"$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH
+
+LD_LIBRARY_PATH=$(dirname $0)/lib/:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH
+echo $LD_LIBRARY_PATH
+END
 
 echo "[complete] library directory"
 
