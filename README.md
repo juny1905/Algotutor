@@ -2,8 +2,8 @@
 
 Embedded SW Engineering Project
 
-201503120 Jun Young Park
-201201734 Han Byeol Cho
+201503120 Jun Young Park (juny1902 - MSI Laptop, wi5hful5n0w - MacBook)
+201201734 Han Byeol Cho (starpia)
 
 // ------------ Algotutor ------------- //
 
