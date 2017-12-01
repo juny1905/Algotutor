@@ -14,9 +14,10 @@ short isComment(char *line_buf)
 }
 char *deleteComment(char *line_buf)
 {
-	for(i=0; i<strlen(line_buf); i++)
+	int j=0;
+	for(j=0; j<strlen(line_buf); j++)
 	{
-		line_buf[i] = line_buf[i+4];
+		line_buf[j] = line_buf[j+4];
 	}
 	return line_buf;
 }
@@ -27,7 +28,7 @@ void addToText(char *feed, LINE **HEAD)
 	NEW->NEXT = 0; NEW->type = isComment(feed);
 	if(NEW->type == SRC_LINE) // If the type of line is source
 	{
-		++i;	
+		i++;	
 		strcpy(NEW->text, feed);
 	}
 	else // If the line is comment line, then delete "//@"
@@ -83,7 +84,6 @@ LINE *ReadFile(char *filename)
 
 	while(fgets(line_buf,sizeof(line_buf), infile))
 	{
-		line_buf[strlen(line_buf)-1] = 0;
 		addToText(line_buf,&para);
 	}
 	

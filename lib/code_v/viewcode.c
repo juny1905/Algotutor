@@ -11,10 +11,12 @@ void printPara(int _y, int _x, int _x_limit, int _y_limit, LINE *para)
 	{
 		for(j=0;j<_x_limit;j++)
 		{
-			mvaddch(_y,_x + j,CUR->text[j]); // From the library 'cursors'
-			if(CUR->text[sizeof(CUR->text)-1] == '\0');
-					CUR = CUR->NEXT;
+			mvaddch(_y + i,_x + j,CUR->text[j]); // From the library 'cursors'
+			puts(CUR->text);
+			if(CUR->text[sizeof(CUR->text)-1] == '\0')
+				CUR = CUR->NEXT;
 		}
+		CUR = CUR->NEXT;
 	}
 }
 void printScrolled(int _y, int _x, int _x_limit, int _y_limit, LINE *para)
@@ -38,4 +40,11 @@ void printScrolled(int _y, int _x, int _x_limit, int _y_limit, LINE *para)
 			}
 		}		
 	}
+}
+int main() // for test
+{
+	LINE *TEST = (LINE *)malloc(sizeof(TEST));
+	TEST = ReadFile("../../doc/test.txt");
+	printPara(0,0,10,10,TEST);
+	return 0;
 }
