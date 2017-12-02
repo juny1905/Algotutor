@@ -19,6 +19,7 @@ char *deleteComment(char *line_buf)
 	{
 		line_buf[j] = line_buf[j+4];
 	}
+	line_buf[strlen(line_buf)] = '\n';
 	return line_buf;
 }
 void addToText(char *feed, LINE **HEAD)
@@ -84,6 +85,7 @@ LINE *ReadFile(char *filename)
 
 	while(fgets(line_buf,sizeof(line_buf), infile))
 	{
+		line_buf[sizeof(line_buf)-1] = '\0';
 		addToText(line_buf,&para);
 	}
 	

@@ -11,10 +11,13 @@ void printPara(int _y, int _x, int _x_limit, int _y_limit, LINE *para)
 	{
 		for(j=0;j<_x_limit;j++)
 		{
-			mvaddch(_y + i,_x + j,CUR->text[j]); // From the library 'cursors'
-			puts(CUR->text);
-			if(CUR->text[sizeof(CUR->text)-1] == '\0')
-				CUR = CUR->NEXT;
+			if(CUR->text[strlen(CUR->text)-1] == '\0') break;
+			// mvaddch(_y + i,_x + j,CUR->text[j]); // From the library 'cursors'
+			printf("%c",CUR->text[j]);
+		}
+		if(CUR->NEXT == NULL)
+		{
+			break;
 		}
 		CUR = CUR->NEXT;
 	}
@@ -45,6 +48,7 @@ int main() // for test
 {
 	LINE *TEST = (LINE *)malloc(sizeof(TEST));
 	TEST = ReadFile("../../doc/test.txt");
-	printPara(0,0,10,10,TEST);
+
+	printPara(1,1,10,10,TEST);
 	return 0;
 }
