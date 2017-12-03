@@ -1,0 +1,12 @@
+#include <stdio.h>
+int main()
+{
+	int i; // Integer variable for count
+	char str[10] = "abcdefghij";
+	for(i=0;i<10;i++)
+	{
+		printf("Current count is %d.\n",i);
+		printf("Current character is %c.\n",str[i]);
+	}
+	return 0;
+}

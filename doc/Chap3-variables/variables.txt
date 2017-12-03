@@ -1,0 +1,15 @@
+#include <stdio.h>
+#include <limits.h>
+int main()
+{
+
+	printf("[int] Max : %d, Min : %d\n",INT_MAX,INT_MIN);
+	printf("[unsigned int] Max : %d, Min : %d\n",UINT_MAX,UINT_MIN);
+
+	printf("[float] Max : %.2f, Min : %.2f\n",FLT_MAX,FLT_MIN);
+	//@ You can print specific point of float number by %.(n)f
+	printf("[double] Max : %.4ld, Min : %.4ld\n",DBL_MAX,DBL_MIN);
+	//@ You can print specific point of double number by %.(n)ld
+
+	return 0;
+}
