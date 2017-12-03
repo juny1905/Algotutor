@@ -12,3 +12,5 @@ This is an educational application for studying algorithms.
 // ------------------------------------ //
 
 2017-11-07 : Repository Created
+
+2017-12-03 : Merge 2 branches.
