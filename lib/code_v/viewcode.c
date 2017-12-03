@@ -1,8 +1,5 @@
-#include "readcode.h"
+#include "viewcode.h"
 #include "ncurses.h"
-void printPara(int _y, int _x, int _x_limit, int _y_limit, LINE *para);
-void printScrolled(int _y, int _x, int _x_limit, int _y_limit, LINE *para);
-
 void printPara(int _y, int _x, int _x_limit, int _y_limit, LINE *para)
 {
 	LINE *CUR = para;
@@ -12,7 +9,7 @@ void printPara(int _y, int _x, int _x_limit, int _y_limit, LINE *para)
 		for(j=0;j<_x_limit;j++)
 		{
 			if(CUR->text[strlen(CUR->text)-1] == '\0') break;
-			// mvaddch(_y + i,_x + j,CUR->text[j]); // From the library 'cursors'
+			mvaddch(_y + i,_x + j,CUR->text[j]); // From the library 'cursors'
 			printf("%c",CUR->text[j]);
 		}
 		if(CUR->NEXT == NULL)
@@ -44,6 +41,7 @@ void printScrolled(int _y, int _x, int _x_limit, int _y_limit, LINE *para)
 		}		
 	}
 }
+/*
 int main() // for test
 {
 	LINE *TEST = (LINE *)malloc(sizeof(TEST));
@@ -52,3 +50,5 @@ int main() // for test
 	printPara(1,1,10,10,TEST);
 	return 0;
 }
+*/
+

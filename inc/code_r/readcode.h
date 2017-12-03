@@ -1,5 +1,5 @@
-#ifndef CODE_VIEW_H
-#define CODE_VIEW_H
+#ifndef CODE_READ_H
+#define CODE_READ_H
 
 #define SZ_BUF 1024
 
@@ -27,4 +27,4 @@ void addToText(char *feed, LINE **HEAD);
 void displayText(LINE *HEAD);
 LINE *ReadFile(char *filename);
 char *deleteComment(char *line_buf);
-#endif // CODE_VIEW_H
+#endif // CODE_READ_H
