@@ -136,10 +136,17 @@ void showMenu(int _maxRow, int _maxCol, int _menuCur, int _categoryNum, struct c
 	
 	mvaddch(4+(_menuCur*2), 3, '>');
 
-	for(int i=0; i<(_menuCur+1); i++)
+	/*
+	if(_categoryNum > 0)
 	{
-		cur = cur->bottom;
+		for(int i=0; i<(_menuCur); i++)
+		{
+			cur = cur->bottom;
+		}
+
+		cur = cur->next;
 	}
+	*/
 
 	/*
 	if(cur->next != NULL)
@@ -153,11 +160,11 @@ void showMenu(int _maxRow, int _maxCol, int _menuCur, int _categoryNum, struct c
 	}
 	*/
 
-	if(cur->action == 0)
-	{
-			return;
-	}
-	else if(cur->action == 1 || _categoryNum == 0)
+	//if(cur->action == 0 && _categoryNum > 0)
+	//{
+	//		return;
+	//}
+	//else if(cur->action == 1 || _categoryNum == 0)
 	{
 			int j = 0;
 
@@ -167,16 +174,18 @@ void showMenu(int _maxRow, int _maxCol, int _menuCur, int _categoryNum, struct c
 				{
 					mvaddstr_att(4+(j*2), 4, \
 					(char *)cur->cat_name, A_BOLD);
+					mvaddch(4+(j*2), 25, (char)(cur->action + '1'));
 				}
 				else
 				{
 					mvaddstr(4+(j*2), 4, (char *)cur->cat_name);
+					mvaddch(4+(j*2), 25, (char)(cur->action + '1'));
 				}
 
 				cur = cur->bottom;
 				j++;
 			}
-	}
+	}/*
 	else if(cur->action == 2)
 	{
 	}
@@ -186,7 +195,7 @@ void showMenu(int _maxRow, int _maxCol, int _menuCur, int _categoryNum, struct c
 	else if(cur->action == -2)
 	{
 	}
-
+	*/
 	return;
 }
 
@@ -195,7 +204,7 @@ int checkMenuLength(int _categoryNum, char *_menu[][5])
 
 }
 
-void create_directory(char *_doc, struct category *_cat_head)
+int create_directory(char *_doc, struct category **_cat_head)
 {
 	
 	DIR *dir = opendir(_doc);
@@ -203,8 +212,9 @@ void create_directory(char *_doc, struct category *_cat_head)
 	char *temp[4] = {"Algotutor - v.1.1.0",\
 					 "1. Start",\
 					 "2. End", 0};
-	struct category *cur = _cat_head;
+	struct category *cur = (*_cat_head);
 	int i = 0;
+	int cnt = 0;
 
 	/* root category */
 	while(temp[i] != 0)
@@ -236,12 +246,22 @@ void create_directory(char *_doc, struct category *_cat_head)
 	}
 
 	/* read another category */
-	cur = _cat_head;
+	cur = (*_cat_head);
 	while(cur->action != 1)
 	{
 			cur = cur->bottom;
 	}
 	cur = cur->next;
+	
+	if( cur->cat_name != NULL )
+	{
+		cur->bottom = (struct category *)malloc(sizeof(struct category));
+		cur->bottom->action = 0;
+		cur->bottom->cat_name = NULL;
+		cur->bottom->next = NULL;
+		cur->bottom->bottom = NULL;
+		cur = cur->bottom;
+	}
 
 	while((dirs = readdir(dir)) != NULL)	
 	{
@@ -268,18 +288,22 @@ void create_directory(char *_doc, struct category *_cat_head)
 		}
 
 		cur = cur->bottom;
+		cnt++;
 	}
 
-	cur->cat_name = (char *)malloc(strlen("Back")+1);
-	strcpy(cur->cat_name, "Back");
+	cur->cat_name = (char *)malloc(strlen("Go Back")+1);
+	strcpy(cur->cat_name, "Go Back");
 	cur->action = -1; 
 
-	return;
+	return cnt;
 
 }
 
 void selectMenu(int _menuCur, struct category **cur)
 {
+	struct category *temp = (*cur);
+	int cnt = 0;
+
 	for(int i=0; i<(_menuCur); i++)
 	{
 		if( (*cur)->bottom != NULL )
@@ -288,12 +312,31 @@ void selectMenu(int _menuCur, struct category **cur)
 		}
 	}
 
-	if( (*cur)->next != NULL )
+	if( (*cur)->action == 0 )
 	{
-		(*cur) = (*cur)->next;
+	}
+	else if( (*cur)->action == 1 )
+	{
+		if( (*cur)->next != NULL )
+		{
+			(*cur) = (*cur)->next;
+		}
+	}
+	
+	return;
+}
+
+int countCategory(struct category *cur)
+{
+	int result = 0;
+	
+	while(cur->bottom != NULL)
+	{
+		cur = cur->bottom;
+		result++;
 	}
 
-	return;
+	return result;
 }
 
 int main(void)
@@ -324,12 +367,14 @@ int main(void)
 	assume_default_colors(COLOR_YELLOW,COLOR_BLUE);
 	
 	/*  */
-	create_directory("../../doc/",cat_head);
+	create_directory("../../doc/",&cat_head);
 	cur = cat_head;
 	
 	/* Show up interface Frame */
 	printFrame(maxRow, maxCol);
 	showMenu(maxRow,maxCol,menuCur,categoryNum,cat_head);
+	selectMenu(menuCur,&cat_head);
+	maxMenu = countCategory(cat_head);
 
 	while((key = getch()) != 27)
 	{
@@ -367,6 +412,8 @@ int main(void)
 			case '\n':
 					prev = cur;
 					selectMenu(menuCur,&cur);
+					maxMenu = countCategory(cur);
+					showMenu(maxRow,maxCol,menuCur,categoryNum,cur);
 					//showMenu(maxRow,maxCol,menuCur,categoryNum,cur);					
 					categoryNum = (categoryNum+1)%maxCat;
 					menuCur = 0;
