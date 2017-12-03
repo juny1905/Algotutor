@@ -3,7 +3,7 @@
 int i=0; // for line numbering
 short isComment(char *line_buf)
 {
-		if(strncmp(line_buf,"//@",3) == 0)
+		if((strstr(line_buf,"//@"))!= 0)
 		{
 			return 1;
 		}
@@ -19,13 +19,13 @@ char *deleteComment(char *line_buf)
 	{
 		line_buf[j] = line_buf[j+4];
 	}
-	line_buf[strlen(line_buf)] = '\n';
+	line_buf[strlen(line_buf)] = '\0';
 	return line_buf;
 }
 void addToText(char *feed, LINE **HEAD)
 {
 	LINE *NEW = (LINE *)malloc(sizeof(LINE));
-	NEW->text = (char *)malloc(sizeof(feed)+1);
+	NEW->text = (char *)malloc(sizeof(feed)*SZ_BUF);
 	NEW->NEXT = 0; NEW->type = isComment(feed);
 	if(NEW->type == SRC_LINE) // If the type of line is source
 	{
@@ -83,7 +83,7 @@ LINE *ReadFile(char *filename)
 	
 	// How do I read the text line by line ?
 
-	while(fgets(line_buf,sizeof(line_buf), infile))
+	while(fgets(line_buf,SZ_BUF, infile))
 	{
 		line_buf[sizeof(line_buf)-1] = '\0';
 		addToText(line_buf,&para);

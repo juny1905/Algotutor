@@ -4,7 +4,8 @@
 int main(void)
 {
 	LINE *TEST = (LINE *)malloc(sizeof(LINE));
-	TEST = ReadFile("../../doc/test.txt");
-	printPara(10,10,10,10,TEST);
+	TEST = ReadFile("../../doc/Chap1-printf/printf.txt");
+	printPara(10,10,30,20,TEST);
+	// displayText(TEST);	
 	return 0;	
 }

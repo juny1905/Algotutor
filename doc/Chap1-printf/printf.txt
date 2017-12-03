@@ -8,7 +8,7 @@ int main()
 	
 	printf("%d",a); // %d will be replaced by integer 'd'
 	//@ You can print the variable by '%d'
-	
+
 	return 0;
 	//@ Program returns 0 and exit.
 }
