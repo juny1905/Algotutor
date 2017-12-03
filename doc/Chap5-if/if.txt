@@ -1,0 +1,25 @@
+#include <stdio.h>
+int main()
+{
+	int a = 3;
+	int b = 4;
+	/*
+		== : equal		<= : equal or smaller than
+		!= : not equal		>= : equal or larger than
+		> : larger than
+		< : smaller than
+	*/
+	if(a == b) // is b and c same(==) ?
+	{
+		printf("%d and %d are same !\n",a,b);
+	}
+	else if(a > b) // is a is larger than b ?
+	{
+		printf("%d is larger than %d !\n",a,b);
+	}
+	else
+	{
+		printf("%d is smaller than %d and different !\n",a,b);
+	}
+	return 0;
+}
