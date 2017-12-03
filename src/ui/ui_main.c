@@ -128,33 +128,63 @@ void mvaddstr_att(int _y, int _x, const char *_str, int _att)
 	return;
 }
 
-void selectMenu(int _maxRow, int _maxCol, int _menuCur, struct category *_cat_head)
+void showMenu(int _maxRow, int _maxCol, int _menuCur, int _categoryNum, struct category *_cat_head)
 {
 	struct category *cur = _cat_head;
 	
 	clearWorkspace(_maxRow,_maxCol,CODE_VIEW_PART);
 	
+	mvaddch(4+(_menuCur*2), 3, '>');
+
 	for(int i=0; i<(_menuCur+1); i++)
 	{
 		cur = cur->bottom;
 	}
 
-	if(cur->action == 0)
-
-	//mvadd_wch(4+(_menuCur*2),3,0x25B6);
-	mvaddch(4+(_menuCur*2),3,'>');
-
-	for(int i=0; i<5; i++)
+	/*
+	if(cur->next != NULL)
 	{
-		if(i == 0)
-		{
-			mvaddstr_att(4+(i*2),4, \
-			(char *)_menu[_categoryNum][i], A_BOLD);
-		}
-		else
-		{
-			mvaddstr(4+(i*2),4,(char *)_menu[_categoryNum][i]);
-		}
+		cur = cur->next;
+	}
+	else
+	{
+		// error
+		return;
+	}
+	*/
+
+	if(cur->action == 0)
+	{
+			return;
+	}
+	else if(cur->action == 1 || _categoryNum == 0)
+	{
+			int j = 0;
+
+			while(cur->bottom != NULL)
+			{
+				if(j == 0)
+				{
+					mvaddstr_att(4+(j*2), 4, \
+					(char *)cur->cat_name, A_BOLD);
+				}
+				else
+				{
+					mvaddstr(4+(j*2), 4, (char *)cur->cat_name);
+				}
+
+				cur = cur->bottom;
+				j++;
+			}
+	}
+	else if(cur->action == 2)
+	{
+	}
+	else if(cur->action == -1)
+	{
+	}
+	else if(cur->action == -2)
+	{
 	}
 
 	return;
@@ -215,8 +245,8 @@ void create_directory(char *_doc, struct category *_cat_head)
 
 	while((dirs = readdir(dir)) != NULL)	
 	{
-		if((strcmp(dirs->d_name,".") != 0) &&\
-		   (strcmp(dirs->d_name,"..") != 0))
+		if((strcmp(dirs->d_name,".") == 0) ||\
+		   (strcmp(dirs->d_name,"..") == 0))
 		{
 			continue;
 		}
@@ -248,6 +278,23 @@ void create_directory(char *_doc, struct category *_cat_head)
 
 }
 
+void selectMenu(int _menuCur, struct category **cur)
+{
+	for(int i=0; i<(_menuCur); i++)
+	{
+		if( (*cur)->bottom != NULL )
+		{
+			(*cur) = (*cur)->bottom;
+		}
+	}
+
+	if( (*cur)->next != NULL )
+	{
+		(*cur) = (*cur)->next;
+	}
+
+	return;
+}
 
 int main(void)
 {
@@ -276,20 +323,27 @@ int main(void)
 	/* Set the Background And Fonts Color */
 	assume_default_colors(COLOR_YELLOW,COLOR_BLUE);
 	
-	/* Show up interface Frame */
-	printFrame(maxRow, maxCol);
-	showMenu(maxRow,maxCol,menuCur,cat_head);
-	
 	/*  */
 	create_directory("../../doc/",cat_head);
 	cur = cat_head;
 	
+	/* Show up interface Frame */
+	printFrame(maxRow, maxCol);
+	showMenu(maxRow,maxCol,menuCur,categoryNum,cat_head);
+
 	while((key = getch()) != 27)
 	{
 
+		showMenu(maxRow,maxCol,menuCur,categoryNum,cur);
+
 		switch(key)
 		{
-			case KEY_UP:	if((menuCur - 1) < 0)
+
+			case KEY_UP:	
+					
+					mvaddch(4+(menuCur*2), 3, ' ');
+
+					if((menuCur - 1) < 0)
 					{
 						menuCur = maxMenu - 1;
 					}
@@ -297,20 +351,27 @@ int main(void)
 					{
 						menuCur--;
 					}
+
+					mvaddch(4+(menuCur*2), 3, '>');	
+
 					break;
 
-			case KEY_DOWN:	menuCur = (menuCur + 1)%maxMenu;
+			case KEY_DOWN:	
+				
+					mvaddch(4+(menuCur*2), 3, ' ');	
+					menuCur = (menuCur + 1)%maxMenu;	
+					mvaddch(4+(menuCur*2), 3, '>');
+
 					break;
 
 			case '\n':
 					prev = cur;
-					showMenu(maxRow,maxCol,menuCur,cur);					
+					selectMenu(menuCur,&cur);
+					//showMenu(maxRow,maxCol,menuCur,categoryNum,cur);					
 					categoryNum = (categoryNum+1)%maxCat;
 					menuCur = 0;
 					break;
 		}
-
-	
 
 		// for debugging
 		if( key == 'a' )
