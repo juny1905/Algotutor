@@ -5,10 +5,23 @@
 #include <curses.h>
 #include <stddef.h>
 #include <wchar.h>
+#include <sys/types.h>
+#include <dirent.h>
+#include <string.h>
 
 #define CODE_VIEW_PART 0
 #define SIMUL_VIEW_PART 1
 #define COMMENT_PART 2
+
+#define BUFSIZE 255;
+
+struct category
+{
+	char *cat_name;
+	unsigned char action;
+	struct category *cat_bottom;
+	struct category *cat_next;	
+};
 
 void init_ui(void)
 {
@@ -153,6 +166,82 @@ int checkMenuLength(int _categoryNum, char *_menu[][5])
 
 }
 
+void read_directory(char *_doc, struct category *_cat_head)
+{
+	
+	DIR *dir = opendir(_doc);
+	struct dirent *dirs = NULL;
+	char *temp[4] = {"Algotutor - v.1.1.0",\
+					 "1. Start",\
+					 "2. End", 0};
+	struct category *cur = _cat_head;
+	int i = 0;
+
+	/* read category */
+	dirs = readdir(dir);
+	
+	/* root category */
+	while(temp[i] != 0)
+	{	
+			cur->cat_name = (char *)malloc(strlen(temp[i])+1);
+			strcpy(cur->cat_name, temp[i]);
+
+			if(i == 0)
+				cur->action = 0; // do nothing
+			else if(i == 1)
+				cur->action = 1; // another category
+			else if(i == 2)
+				cur->action = -1; // exit program
+
+			cur->bottom = (struct category *)malloc(sizeof(struct category));
+			cur->next = (struct category *)malloc(sizeof(struct category));
+			cur->next->cat_name = (char *)malloc(strlen(temp[i]+1));
+			strcpy(cur->next->cat_name, temp[i]);
+			cur->next->next = NULL;
+			cur->next->bottom = NULL;
+
+			cur = cur->bottom;
+			cur->next = NULL;
+			cur->bottom = NULL;
+	}
+
+	/* another category */
+	cur = _cat_head;
+	while(cur->action != 1)
+	{
+			cur = cur->bottom;
+	}
+
+	cur->next = (struct category *)malloc(sizeof(struct category));
+	
+
+	head->cat_name = (char *)malloc(strlen(dirs->d_name)+1);
+	strcpy(head->cat_name,dirs->d_name);
+	head->next = NULL;
+	//mvaddstr(10,2,head->cat_name);
+
+	{
+		struct menu *cur = head;
+
+		while((dirs = readdir(dir)) != NULL)
+		{
+				if((strcmp(dirs->d_name,".") != 0) &&\
+				   (strcmp(dirs->d_name,"..") != 0))
+				{
+					cur->next = (struct menu *)malloc(sizeof(struct menu));
+					cur->next->cat_name = (char *)malloc(strlen(dirs->d_name)+1);
+					strcpy(cur->cat_name,dirs->d_name);
+					cur->next->next = NULL;
+					cur = cur->next;
+				}
+			
+		}
+
+		//mvaddstr(20,2,cur->cat_name);
+	}
+}
+
+
 int main(void)
 {
 	wchar_t key = -1;
@@ -162,15 +251,12 @@ int main(void)
 	int categoryNum = 0;
 	int maxCat = 5;
 	int menuCur = 0;
-	int maxMenu = 5;
-	
-	char *menu[5][5] = {
-		{"Algotutor - v.1.0.0", "1. Start", "2. End", 0,0},
-		{"Select category","1. scanf and printf","2. if","3. for loop","4. nested for loop"},
-		{0,0,0,0,0},
-		{0,0,0,0,0},
-		{0,0,0,0,0}
-	};
+	int maxMenu = 5;	
+
+	struct category *cat_head = (struct category *)malloc(sizeof(struct category));
+	cat_head->action = 0;
+	cat_head->cat_bottom = NULL;
+	cat_head->cat_next = NULL;
 
 	/* Curses Initializations */
 	init_ui();
@@ -183,8 +269,24 @@ int main(void)
 	
 	/* Show up interface Frame */
 	printFrame(maxRow, maxCol);
-	showMenu(maxRow,maxCol,menuCur,categoryNum,menu);
+	//showMenu(maxRow,maxCol,menuCur,categoryNum,menu);
 	
+
+
+	/* testing */
+	/*	
+	{
+		int i = 0;
+
+		while(head != NULL)
+		{
+			mvaddstr(i,2,head->cat_name);
+			head = head->next;
+			i++;
+		}
+	}
+	*/
+
 	while((key = getch()) != 27)
 	{
 		switch(key)
@@ -207,7 +309,7 @@ int main(void)
 					break;
 		}
 
-		showMenu(maxRow,maxCol,menuCur,categoryNum,menu);
+		//showMenu(maxRow,maxCol,menuCur,categoryNum,menu);
 
 		// for debugging
 		if( key == 'a' )
