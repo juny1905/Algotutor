@@ -136,35 +136,6 @@ void showMenu(int _maxRow, int _maxCol, int _menuCur, int _categoryNum, struct c
 	
 	mvaddch(4+(_menuCur*2), 3, '>');
 
-	/*
-	if(_categoryNum > 0)
-	{
-		for(int i=0; i<(_menuCur); i++)
-		{
-			cur = cur->bottom;
-		}
-
-		cur = cur->next;
-	}
-	*/
-
-	/*
-	if(cur->next != NULL)
-	{
-		cur = cur->next;
-	}
-	else
-	{
-		// error
-		return;
-	}
-	*/
-
-	//if(cur->action == 0 && _categoryNum > 0)
-	//{
-	//		return;
-	//}
-	//else if(cur->action == 1 || _categoryNum == 0)
 	{
 			int j = 0;
 
@@ -174,28 +145,18 @@ void showMenu(int _maxRow, int _maxCol, int _menuCur, int _categoryNum, struct c
 				{
 					mvaddstr_att(4+(j*2), 4, \
 					(char *)cur->cat_name, A_BOLD);
-					mvaddch(4+(j*2), 25, (char)(cur->action + '1'));
+					//mvaddch(4+(j*2), 25, (char)(cur->action + '1'));
 				}
 				else
 				{
 					mvaddstr(4+(j*2), 4, (char *)cur->cat_name);
-					mvaddch(4+(j*2), 25, (char)(cur->action + '1'));
+					//mvaddch(4+(j*2), 25, (char)(cur->action + '1'));
 				}
 
 				cur = cur->bottom;
 				j++;
 			}
-	}/*
-	else if(cur->action == 2)
-	{
 	}
-	else if(cur->action == -1)
-	{
-	}
-	else if(cur->action == -2)
-	{
-	}
-	*/
 	return;
 }
 
