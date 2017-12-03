@@ -1,0 +1,13 @@
+#include <stdio.h>
+int main()
+{
+	int a[5] = {1,2,3,4,5};
+	
+	print("{%d,%d,%d,%d,%d}",a[0],a[1],a[2],a[3],a[4]);
+	//@ Don't confused ! Array index starts from '0'
+
+	char hello[20] = "Hello, World !";
+	printf("%s\n",hello);
+	printf("3rd character: %c, 10th character : %c\n",hello[2],hello[9]);
+	return 0;
+}

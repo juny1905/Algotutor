@@ -1,0 +1,11 @@
+#include <stdio.h>
+void main()
+{
+	int a;
+	//@ Declare the integer variable.
+	scanf("%d",&a);
+	//@ Input integer(%d) to the variable 'a'
+	printf("%d",a);
+	//@ Print integer(%d) 'a'
+	return 0;
+}
