@@ -3,13 +3,16 @@ CC = gcc
 CFLAGS = -g -Wall
 OBJFILES = readcode.o
 INCLUDE = ../../inc/code_r
-OUTPUT = libcoder.a
-
-$(OUTPUT): $(OBJFILES)
-	ar rv $(OUTPUT) $(OBJFILES)
+SHARED = libcoder.so.1.0 
+OUTPUT = libcoder.so libcoder.so.1
+$(OUTPUT): $(SHARED)
+	ln -s $(SHARED) libcoder.so
+	ln -s $(SHARED) libcoder.so.1
+$(SHARED): $(OBJFILES)
+	$(CC) -fPIC -shared -Wl,-soname=libcoder.so.1 *.o -o libcoder.so.1.0 -lc
 %.o: %.c
-	$(CC) $(CFLAGS) -I$(INCLUDE) -c $< -o $@
+	$(CC) $(CFLAGS) -fPIC -c -I$(INCLUDE) -c $< -o $@
 clean:
-	sudo rm *.o $(OUTPUT)
+	sudo rm *.o $(OUTPUT) $(SHARED)
 info:
-	nm libcoder.a
+	nm libcoder.so.1.0

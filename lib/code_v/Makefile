@@ -1,18 +1,18 @@
-.PHONY : clean info
+.PHONY:clean info
 CC = gcc
 CFLAGS = -g -Wall
 OBJFILES = viewcode.o
-INCLUDE = -I../../inc/code_r -I../../inc/code_v
-LIB = -L../../lib/code_r
-LIBS = -lcoder -lncurses
- 
-OUTPUT = libcodev.a
-
-$(OUTPUT) : $(OBJFILES)
-	ar rv $(OUTPUT) $(OBJFILES)
-%.o:%.c
-	$(CC) $(CFLAGS) -I$(INCLUDE) -c $< -o $@
+INCLUDE = ../../inc/code_v
+SHARED = libcodev.so.1.0 
+OUTPUT = libcodev.so libcodev.so.1
+$(OUTPUT): $(SHARED)
+	ln -s $(SHARED) libcodev.so
+	ln -s $(SHARED) libcodev.so.1
+$(SHARED): $(OBJFILES)
+	$(CC) -fPIC -shared -Wl,-soname=libcodev.so.1 *.o -o libcodev.so.1.0 -lc
+%.o: %.c
+	$(CC) $(CFLAGS) -fPIC -c -I$(INCLUDE) -c $< -o $@ -lcoder -lncurses
 clean:
-	sudo rm *.o $(OUTPUT)
+	sudo rm *.o $(OUTPUT) $(SHARED)
 info:
-	nm libcodev.a
+	nm libcodev.so.1.0
