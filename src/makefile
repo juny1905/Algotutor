@@ -7,7 +7,7 @@ LIB_DIR = ../lib/ui
 .PHONY: clean
 
 ../algotutor : ./main.c 
-	$(CC) -o $@ $< -I../inc/ui/ -L$(LIB_DIR) -lui -lncurses
+	$(CC) -o $@ $< -I../inc/ui/ -L$(LIB_DIR) -lui -lncurses -lpthread
 
 #$(LIB_DIR)/$(LIB_FILES) : 
 

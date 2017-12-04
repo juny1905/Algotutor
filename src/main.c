@@ -1,7 +1,7 @@
 #include "console.h"
 #include <pthread.h>
 #include <stdlib.h>
-
+#include <stdio.h>
 #define MAX_THREADS 2
 
 int xlimit = 0;
@@ -31,12 +31,12 @@ int main(int argc, char *argv)
 		int result = 0;
 		if( i == 0 )
 		{
-			result = pthread_create(&threadPool, NULL,\
+			result = pthread_create(&threadPool[i], NULL,\
 				user_interface, NULL);
 		}
 		else if( i == 1 )
 		{
-			result = pthread_create(&threadPool, NULL,\
+			result = pthread_create(&threadPool[i], NULL,\
 				code_view, NULL);
 		}
 
