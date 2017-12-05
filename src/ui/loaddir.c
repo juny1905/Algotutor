@@ -84,8 +84,6 @@ int create_directory(char *_doc, struct category **_cat_head)
 	cur = cur->next;
 
 	/* remember cur pointer */
-	prev_cur = cur;
-
 	if( cur->cat_name != NULL )
 	{
 		cur->bottom = (struct category *)malloc(sizeof(struct category));
@@ -96,6 +94,7 @@ int create_directory(char *_doc, struct category **_cat_head)
 		cur->bottom->bottom = NULL;
 		cur = cur->bottom;
 	}
+	prev_cur = cur;
 
 	/* read and make ordered */
 	dir = opendir(_doc);
@@ -142,7 +141,7 @@ int create_directory(char *_doc, struct category **_cat_head)
 			strcpy(cur->cat_name, catArray[n]);
 			cur->action = DIRS;
 
-			printf("%s, %s\n", cur->cat_name, cur->cat_dir);
+			//printf("%s, %s\n", cur->cat_name, cur->cat_dir);
 			
 		}
 
@@ -159,6 +158,52 @@ int create_directory(char *_doc, struct category **_cat_head)
 		cur = cur->bottom;
 	}
 
+	/* load sub_directory file */
+	cur = prev_cur;
+
+	while(cur->bottom != NULL)
+	{
+		DIR *sub_dir = opendir(cur->cat_dir);
+		struct dirent *sub_dirs = NULL;
+
+		while((sub_dirs = readdir(sub_dir)) != NULL)
+		{
+			if((strcmp(sub_dirs->d_name,".") == 0) ||\
+			   (strcmp(sub_dirs->d_name,"..") == 0))
+			{
+				continue;
+			}
+
+			if(cur->next == NULL)
+			{				
+				char str_temp[BUFSIZE] = {0,};
+				strcpy(str_temp, cur->cat_dir);
+				strcat(str_temp, "/");
+				strcat(str_temp, sub_dirs->d_name);
+
+				cur->next = (struct category *)malloc(\
+					sizeof(struct category));
+				
+				cur->next->cat_name = (char *)malloc(\
+					strlen(sub_dirs->d_name)+1);
+				strcpy(cur->next->cat_name, sub_dirs->d_name);
+				
+				cur->next->cat_dir = (char *)malloc(\
+					strlen(str_temp)+1);
+				strcpy(cur->next->cat_dir, str_temp);
+
+				/* EVENT is 'Do something' */
+				cur->next->action = EVENT;
+				cur->next->bottom = NULL;
+				cur->next->next = NULL;
+			}
+		}
+		
+		cur = cur->bottom;
+		closedir(sub_dir);
+	}
+
+	closedir(dir);
 	return cnt;
 
 }
