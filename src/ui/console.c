@@ -12,6 +12,8 @@
 
 #define BUFSIZE 255;
 
+#define DOC_DIR "./doc/"
+
 /*
 struct category
 {
@@ -323,7 +325,7 @@ int ui_main(int *_xlimit, int *_ylimit)
 	assume_default_colors(COLOR_YELLOW,COLOR_BLUE);
 	
 	/*  */
-	create_directory("./doc/",&cat_head);
+	create_directory(DOC_DIR,&cat_head);
 	cur = cat_head;
 	
 	/* Show up interface Frame */
