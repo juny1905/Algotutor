@@ -8,13 +8,11 @@
 #include <sys/types.h>
 #include <dirent.h>
 #include <string.h>
-
-#define CODE_VIEW_PART 0
-#define SIMUL_VIEW_PART 1
-#define COMMENT_PART 2
+#include "console.h"
 
 #define BUFSIZE 255;
 
+/*
 struct category
 {
 	char *cat_name;
@@ -22,6 +20,7 @@ struct category
 	struct category *bottom;
 	struct category *next;	
 };
+*/
 
 void init_ui(void)
 {
@@ -71,7 +70,7 @@ void clearWorkspace(int _maxRow, int _maxCol, int _option)
 
 void printFrame(int _maxRow, int _maxCol)
 {
-	int half_maxRow = _maxRow/2;
+	//int half_maxRow = _maxRow/2;
 	int half_maxCol = _maxCol/2;
 	int midRow = _maxRow-5;
 
@@ -158,11 +157,6 @@ void showMenu(int _maxRow, int _maxCol, int _menuCur, int _categoryNum, struct c
 			}
 	}
 	return;
-}
-
-int checkMenuLength(int _categoryNum, char *_menu[][5])
-{
-
 }
 
 int create_directory(char *_doc, struct category **_cat_head)
@@ -262,8 +256,8 @@ int create_directory(char *_doc, struct category **_cat_head)
 
 void selectMenu(int _menuCur, struct category **cur)
 {
-	struct category *temp = (*cur);
-	int cnt = 0;
+	//struct category *temp = (*cur);
+	//int cnt = 0;
 
 	for(int i=0; i<(_menuCur); i++)
 	{
@@ -300,12 +294,11 @@ int countCategory(struct category *cur)
 	return result;
 }
 
-int main(void)
+int ui_main(int *_xlimit, int *_ylimit)
 {
 	wchar_t key = -1;
 	int maxRow = 0;
 	int maxCol = 0;
-	int cursorCol = 3;
 	int categoryNum = 0;
 	int maxCat = 5;
 	int menuCur = 0;
@@ -323,12 +316,14 @@ int main(void)
 
 	/* Check the Console size */
 	getmaxyx(stdscr,maxRow,maxCol);
+	(*_xlimit) = maxRow;
+	(*_ylimit) = maxCol;
 
 	/* Set the Background And Fonts Color */
 	assume_default_colors(COLOR_YELLOW,COLOR_BLUE);
 	
 	/*  */
-	create_directory("../../doc/",&cat_head);
+	create_directory("./doc/",&cat_head);
 	cur = cat_head;
 	
 	/* Show up interface Frame */
@@ -372,6 +367,7 @@ int main(void)
 
 			case '\n':
 					prev = cur;
+					cur = prev;
 					selectMenu(menuCur,&cur);
 					maxMenu = countCategory(cur);
 					showMenu(maxRow,maxCol,menuCur,categoryNum,cur);
@@ -392,5 +388,5 @@ int main(void)
 	echo();
 	refresh();
 	endwin();
-
+	return 0;
 }
