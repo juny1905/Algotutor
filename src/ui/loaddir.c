@@ -8,10 +8,12 @@
 #include <dirent.h>
 #include <string.h>
 
-//#include "console.h"
+#include "loaddir.h"
 
 #define BUFSIZE 255
 
+/* in loaddir.h */
+/*
 #define IDLE 0
 #define STRT 1
 #define DIRS 2
@@ -27,8 +29,9 @@ struct category
 	struct category *bottom;
 	struct category *next;
 };
+*/
 
-int create_directory(char *_doc, struct category **_cat_head)
+int load_directory(char *_doc, struct category **_cat_head)
 {
 	
 	DIR *dir = NULL;
@@ -107,8 +110,15 @@ int create_directory(char *_doc, struct category **_cat_head)
 			continue;
 		}
 
+		/* really special case */
+		if(strcmp(dirs->d_name,"test.txt") == 0)
+		{
+			continue;
+		}
+
 		catArray[i] = (char *)malloc(strlen(dirs->d_name)+1);
 		strcpy(catArray[i],dirs->d_name);
+		//printf("%s :%d\n",catArray[i],i);
 		i++;
 	}
 
@@ -192,6 +202,9 @@ int create_directory(char *_doc, struct category **_cat_head)
 					strlen(str_temp)+1);
 				strcpy(cur->next->cat_dir, str_temp);
 
+				/* debug code */
+				//printf("%s %s\n",cur->next->cat_name,cur->next->cat_dir);
+
 				/* EVENT is 'Do something' */
 				cur->next->action = EVENT;
 				cur->next->bottom = NULL;
@@ -199,15 +212,28 @@ int create_directory(char *_doc, struct category **_cat_head)
 			}
 		}
 		
-		cur = cur->bottom;
-		closedir(sub_dir);
+		if(cur->bottom != NULL)
+		{
+			cur = cur->bottom;
+		}
+
+		if(closedir(sub_dir) != 0)
+		{
+			perror("closedir(sub_dir) : ");
+			return -1;
+		}
 	}
 
-	closedir(dir);
+	if(closedir(dir) != 0)
+	{
+		perror("closedir(dir) : ");
+		return -1;
+	}
 	return cnt;
 
 }
 
+/*
 int main(void)
 {
 	struct category *cat_head = (struct category *)malloc(\
@@ -219,7 +245,8 @@ int main(void)
 	cat_head->bottom = NULL;
 	cat_head->next = NULL;
 
-	create_directory("../../doc/",&cat_head);
+	load_directory("../../doc/",&cat_head);
 
 	return 0;
 }
+*/

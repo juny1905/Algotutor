@@ -1,8 +1,9 @@
 CC = gcc
 CFLAGS = -g -Wall -fPIC -c
-OBJ = ./cursor.o ./console.o
+OBJ = ./cursor.o ./loaddir.o ./uimain.o ./uisub.o ./keyhandler.o 
 LIB_DIR = ../../lib
 LUI_DIR = ../../lib/ui
+INC_DIR = ../../inc/ui
 
 .PHONY: clean
 
@@ -12,14 +13,17 @@ LUI_DIR = ../../lib/ui
 	ln -s $(LUI_DIR)/libui.so.1.0 $(LUI_DIR)/libui.so.1
 	cp $(LUI_DIR)/libui.so.1 $(LIB_DIR)/libui.so.1
 
-console.o : console.c
-	$(CC) $(CFLAGS) $< -I../../inc/ui/
+#loaddir.o : loaddir.c
+#	$(CC) $(CFLAGS) $< -I../../inc/ui/
 
-cursor.o : cursor.c
-	$(CC) $(CFLAGS) $<
+#cursor.o : cursor.c
+#	$(CC) $(CFLAGS) $< -I../../inc/ui/
+
+%.o:%.c
+	$(CC) $(CFLAGS) -o $@ $< -I$(INC_DIR)
 
 clean :
-	/bin/rm -f $(LUI_DIR)/*.o
+	/bin/rm -f ./*.o
 	/bin/rm -f $(LUI_DIR)/*.so
 	/bin/rm -f $(LUI_DIR)/*.so.1
 	/bin/rm -f $(LUI_DIR)/*.so.1.0

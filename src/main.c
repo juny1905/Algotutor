@@ -1,15 +1,19 @@
-#include "console.h"
 #include <pthread.h>
 #include <stdlib.h>
 #include <stdio.h>
 #define MAX_THREADS 2
+
+#include <ncurses.h>
+#include <curses.h>
+#include "uimain.h"
+#include "uisub.h"
 
 int xlimit = 0;
 int ylimit = 0;
 
 void *user_interface(void *_arg)
 {
-	ui_main(&xlimit,&ylimit);
+	uiMain(&xlimit,&ylimit);
 	pthread_exit(NULL);
 }
 
