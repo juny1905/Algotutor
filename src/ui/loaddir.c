@@ -176,6 +176,19 @@ int load_directory(char *_doc, struct category **_cat_head)
 		DIR *sub_dir = opendir(cur->cat_dir);
 		struct dirent *sub_dirs = NULL;
 
+		if(cur->next == NULL)
+		{
+			cur->next = (struct category *)malloc(\
+				sizeof(struct category));
+			cur->next->cat_name = (char *)malloc(\
+				strlen(cur->cat_name)+1);
+			strcpy(cur->next->cat_name, cur->cat_name);
+			cur->next->cat_dir = NULL;
+			cur->next->next = NULL;
+			cur->next->bottom = NULL;
+			cur->next->action = IDLE;
+		}
+
 		while((sub_dirs = readdir(sub_dir)) != NULL)
 		{
 			if((strcmp(sub_dirs->d_name,".") == 0) ||\
@@ -184,31 +197,34 @@ int load_directory(char *_doc, struct category **_cat_head)
 				continue;
 			}
 
-			if(cur->next == NULL)
+			if(cur->next->bottom == NULL)
 			{				
 				char str_temp[BUFSIZE] = {0,};
 				strcpy(str_temp, cur->cat_dir);
 				strcat(str_temp, "/");
 				strcat(str_temp, sub_dirs->d_name);
 
-				cur->next = (struct category *)malloc(\
+				cur->next->bottom = (struct category *)malloc(\
 					sizeof(struct category));
 				
-				cur->next->cat_name = (char *)malloc(\
+				cur->next->bottom->cat_name = (char *)malloc(\
 					strlen(sub_dirs->d_name)+1);
-				strcpy(cur->next->cat_name, sub_dirs->d_name);
+				strcpy(cur->next->bottom->cat_name, \
+					sub_dirs->d_name);
 				
-				cur->next->cat_dir = (char *)malloc(\
+				cur->next->bottom->cat_dir = (char *)malloc(\
 					strlen(str_temp)+1);
-				strcpy(cur->next->cat_dir, str_temp);
+				strcpy(cur->next->bottom->cat_dir, str_temp);
 
 				/* debug code */
 				//printf("%s %s\n",cur->next->cat_name,cur->next->cat_dir);
+				//printf("%s %s\n",cur->next->bottom->cat_name,cur->next->bottom->cat_dir);
+
 
 				/* EVENT is 'Do something' */
-				cur->next->action = EVENT;
-				cur->next->bottom = NULL;
-				cur->next->next = NULL;
+				cur->next->bottom->action = EVENT;
+				cur->next->bottom->bottom = NULL;
+				cur->next->bottom->next = NULL;
 			}
 		}
 		

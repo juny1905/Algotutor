@@ -7,13 +7,18 @@
 #include <wchar.h>
 #include <sys/types.h>
 
+#include "uisub.h"
 #include "cursor.h"
+#include "mykey.h"
 
-void keyHandler(int *_state, struct category *_cat_head)
+void keyHandler(int *_menuCur, int *_maxMenu, int *_state, int *_keyFlag, struct category **_cat_head)
 {
 	wchar_t key;
-	int menuCur = 0;
-	int maxMenu = 5;
+	//int menuCur = 0;
+	//int maxMenu = 5;
+
+	struct category *cur = (*_cat_head);
+	(*_maxMenu) = countCategory(cur);
 
 	while((key = getch()) != 27)
 	{
@@ -25,7 +30,8 @@ void keyHandler(int *_state, struct category *_cat_head)
 				/* less than EVENT */
 				if((*_state) < 3)
 				{
-					cursor_up(&menuCur, &maxMenu);
+					cursor_up(_menuCur, _maxMenu);
+					(*_keyFlag) = KEY_FLAG_UP;
 				}
 
 				/* doing EVENT */
@@ -41,7 +47,8 @@ void keyHandler(int *_state, struct category *_cat_head)
 				/* less than EVENT */
 				if((*_state) < 3)
 				{
-					cursor_down(&menuCur, &maxMenu);
+					cursor_down(_menuCur, _maxMenu);
+					(*_keyFlag) = KEY_FLAG_DOWN;
 				}
 
 				/* doing EVENT */
@@ -63,15 +70,14 @@ void keyHandler(int *_state, struct category *_cat_head)
 			case '\n':
 			{
 				/* IDLE */
-				if((*_state) == 0)
-				{
-					// do nothing..?
-				}
 				/* selected START and Directory */
-				else if((*_state) == 1 ||\
-					(*_state) == 2)
+				if((*_state) == 0 ||\
+				   (*_state) == 1 ||\
+				   (*_state) == 2)
 				{
-					cursor_select(&menuCur, &_cat_head);	
+					(*_state)\
+					= cursor_select(_menuCur, _cat_head);
+					(*_keyFlag) = KEY_FLAG_ENTER;
 				}
 				/* selected Event */
 				else if((*_state) == 3)
@@ -88,6 +94,8 @@ void keyHandler(int *_state, struct category *_cat_head)
 		}
 
 	}
+
+	(*_state) = EXIT;
 
 	return;
 }

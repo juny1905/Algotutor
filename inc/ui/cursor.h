@@ -5,7 +5,7 @@
 #define STRT 1
 #define DIRS 2
 #define EVENT 3
-#define BACK -1
+#define INIT -1
 #define EXIT -2
 
 #endif

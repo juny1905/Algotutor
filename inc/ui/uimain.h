@@ -5,7 +5,7 @@
 #define STRT 1
 #define DIRS 2
 #define EVENT 3
-#define BACK -1
+#define INIT -1
 #define EXIT -2
 
 #endif
@@ -31,6 +31,6 @@ struct category
 #define SIMUL_VIEW_PART 1
 #define COMMENT_PART 2
 
-int uiMain(int *_xlimit, int *_ylimit);
+int uiMain(int *_xlimit, int *_ylimit, int *_menuCur, int *_maxMenu, int *globalState, int *_keyFlag, struct category **_cat_head);
 
 #endif

@@ -128,8 +128,17 @@ void showMenu(int _maxRow, int _maxCol, int _menuCur, int _categoryNum, struct c
 	{
 			int j = 0;
 
-			while(cur->bottom != NULL)
+			while(TRUE)
 			{
+				if(cur->bottom == NULL)
+				{
+					if(cur->cat_name != NULL)
+					{
+						mvaddstr(4+(j*2), 4, (char *)cur->cat_name);
+					}
+					break;
+				}
+
 				if(j == 0)
 				{
 					mvaddstr_att(4+(j*2), 4, \
@@ -153,8 +162,16 @@ int countCategory(struct category *cur)
 {
 	int result = 0;
 	
-	while(cur->bottom != NULL)
+	while(TRUE)
 	{
+		if(cur->bottom == NULL)
+		{
+			if(cur->cat_name != NULL)
+			{
+				result++;
+			}
+			break;
+		}
 		cur = cur->bottom;
 		result++;
 	}

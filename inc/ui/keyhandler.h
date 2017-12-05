@@ -5,7 +5,7 @@
 #define STRT 1
 #define DIRS 2
 #define EVENT 3
-#define BACK -1
+#define INIT -1
 #define EXIT -2
 
 #endif
@@ -27,6 +27,6 @@ struct category
 #ifndef KEY_HANDLER_H
 #define KEY_HANDLER_H
 
-void keyHandler(int *_state, struct category *_cat_head);
+void keyHandler(int *_menuCur, int *_maxMenu, int *_state, int *_keyFlag, struct category **_cat_head);
 
 #endif
