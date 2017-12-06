@@ -1,27 +1,41 @@
 #include "viewcode.h"
 #include "ncurses.h"
-void printPara(int _y, int _x, int _x_limit, int _y_limit, LINE *para)
+void printComm(int _y, int _x, int line,  LINE *para)
+{
+	LINE *CUR = para;
+	while(CUR != 0)
+	{
+		if(CUR->line_index == line && CUR->type == COM_LINE)
+		{
+			mvaddstr(_y,_x,CUR->text);
+		}
+		CUR = CUR->NEXT;
+	}
+}
+void printPara(int _y, int _x, int _y_limit, int _x_limit, int line, LINE *para)
 {
 	LINE *CUR = para;
 	int i,j;
+	
+	// How can I highlight the specific 'line' ?
 	for(i=0;i<_y_limit;i++)
 	{
-		if(CUR->type != SRC_LINE) CUR = CUR->NEXT;
+		if(CUR->type == COM_LINE) CUR = CUR->NEXT;
 		for(j=0;j<_x_limit;j++)
 		{
 			if(CUR->text[j] == '\0') break;
-			// mvaddch(_y + i,_x + j,CUR->text[j]); // From the library 'cursors'
-			printf("%c",CUR->text[j]);
+			mvaddch(_y + i,_x + j,CUR->text[j]); // From the library 'cursors'
+			// printf("%c",CUR->text[j]); // for test
 		}
 		if(CUR->NEXT == NULL)
 		{
 			break;
 		}
-		printf("\n");
+		// printf("\n");
 		CUR = CUR->NEXT;
 	}
 }
-void printScrolled(int _y, int _x, int _x_limit, int _y_limit, LINE *para)
+void printScrolled(int _y, int _x, int _y_limit, int _x_limit, LINE *para)
 {
 	LINE *CUR = para;
 	if(_x_limit < strlen(CUR->text))
@@ -36,7 +50,6 @@ void printScrolled(int _y, int _x, int _x_limit, int _y_limit, LINE *para)
 			}
 			for(i=0; i<_x_limit; i++)
 			{
-				
 				mvaddch(_y , _x + j,CUR->text[j]);	
 				// Requires the timer.
 			}

@@ -13,6 +13,11 @@
 #include "uisub.h"
 #include "keyhandler.h"
 #include "loaddir.h"
+#include "mykey.h"
+
+#include "viewcode.h"
+#include "readcode.h"
+
 
 int xlimit = 0;
 int ylimit = 0;
@@ -37,20 +42,28 @@ void *user_interface(void *_arg)
 
 void *code_view(void *_arg)
 {
-	/*  */
+	LINE *para = (LINE *)malloc(sizeof(LINE));
+	para = ReadFile(catHead->cat_dir);
 	while(TRUE)
 	{
 		if(globalState == EVENT)
 		{
-			// To do...
+			clearWorkspace(ylimit,xlimit,CODE_VIEW_PART);
+			clearWorkspace(ylimit,xlimit,COMMENT_PART);
+			printComm(2,ylimit-3,seqNum,para);
+			printPara(3,3,ylimit,xlimit,seqNum,para);
 			if( keyFlag == KEY_FLAG_ENTER )
 			{
-				// To do...
-				// keyFlag = KEY_FLAG_OFF;
+				seqNum++;
+				keyFlag = KEY_FLAG_OFF;
 			}
 		}
 		else if(globalState == EXIT)
 		{
+			clearWorkspace(ylimit,xlimit,CODE_VIEW_PART);
+			clearWorkspace(ylimit,xlimit,COMMENT_PART);
+
+			seqNum = 0;
 			break;
 		}
 	}

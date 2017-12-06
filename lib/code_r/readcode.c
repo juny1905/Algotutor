@@ -80,8 +80,6 @@ LINE *ReadFile(char *filename)
 		perror("File");
 		return NULL;
 	}	
-	
-	// How do I read the text line by line ?
 
 	while(fgets(line_buf,SZ_BUF, infile))
 	{
