@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#define MAX_THREADS 3
+#define MAX_THREADS 4
 #define DOC_DIR "./doc/"
 
 #include <ncurses.h>
@@ -19,7 +19,9 @@ int ylimit = 0;
 int menuCur = 0;
 int maxMenu = 3;
 int globalState = INIT;
-int keyFlag = FALSE;
+int keyFlag = KEY_FLAG_OFF;
+
+int seqNum = 0; // To indicate current code squence;
 
 struct category *catHead = NULL;
 
@@ -34,6 +36,28 @@ void *user_interface(void *_arg)
 }
 
 void *code_view(void *_arg)
+{
+	/*  */
+	while(TRUE)
+	{
+		if(globalState == EVENT)
+		{
+			// To do...
+			if( keyFlag == KEY_FLAG_ENTER )
+			{
+				// To do...
+				// keyFlag = KEY_FLAG_OFF;
+			}
+		}
+		else if(globalState == EXIT)
+		{
+			break;
+		}
+	}
+	pthread_exit(NULL);
+}
+
+void *simul_view(void *_arg)
 {
 	pthread_exit(NULL);
 }
@@ -71,6 +95,12 @@ int main(int argc, char *argv)
 			result = pthread_create(&threadPool[i], NULL,\
 				code_view, NULL);
 		}
+		else if( i == 3 )
+		{
+			result = pthread_create(&threadPool[i], NULL,\
+				simul_view, NULL);
+		}
+
 		if(result != 0)
 		{
 			perror("pthread_create : ");
