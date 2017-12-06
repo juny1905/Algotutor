@@ -81,6 +81,12 @@ int uiMain(int *_xlimit, int *_ylimit, int *_menuCur, int *_maxMenu, int *_globa
 			(*_maxMenu) = countCategory((*_cat_head));
 			(*_keyFlag) = KEY_FLAG_OFF;
 		}
+		else if((*_globalState) == EVENT && \
+			(*_keyFlag) == KEY_FLAG_EVENT)
+		{
+			clearWorkspace(maxRow,maxCol,CODE_VIEW_PART);
+			(*_keyFlag) = KEY_FLAG_OFF;
+		}
 		else if((*_globalState) == -2)
 		{
 			break;
