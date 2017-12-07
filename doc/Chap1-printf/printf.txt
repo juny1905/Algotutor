@@ -1,3 +1,4 @@
+//@ Comment test
 #include <stdio.h>
 //@ It requires for printf() and scanf()
 int main()

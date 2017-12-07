@@ -43,24 +43,23 @@ void *user_interface(void *_arg)
 void *code_view(void *_arg)
 {
 	LINE *para = (LINE *)malloc(sizeof(LINE));
-	char info[30];
 	while(TRUE)
 	{
 		if(globalState == EVENT && keyFlag == KEY_FLAG_ENTER)
 		{
-
 			para = ReadFile(catHead->cat_dir);
-		
-			// To print current highlighted line
-			currentLine(1,3,seqNum);	
-			printComm(2,ylimit-3,seqNum,para);
+			keyFlag = KEY_FLAG_OFF;	
+		}
+		else if(globalState == EVENT)
+		{
+			currentLine(0,3,ylimit,xlimit,seqNum);
 			printPara(3,2,ylimit,xlimit,seqNum,para);
 			if( keyFlag == KEY_FLAG_ENTER )
 			{
 				seqNum++;
 				keyFlag = KEY_FLAG_OFF;
-			}
-		}
+			}	
+		}	
 		else if(globalState == EXIT)
 		{
 			clearWorkspace(ylimit,xlimit,CODE_VIEW_PART);

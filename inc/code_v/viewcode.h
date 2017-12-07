@@ -2,8 +2,8 @@
 #define CODE_VIEW_H
 
 #include "../code_r/readcode.h"
-void currentLine(int _y, int _x, int line);
-void printComm(int _y, int _x, int line, LINE *para);
+
+void currentLine(int _y, int _x, int _y_limit, int _x_limit, int line);
 void printPara(int _y, int _x, int _y_limit, int _x_limit, int line, LINE *para);
 void printScrolled(int _y, int _x, int _y_limit, int _x_limit, LINE *para);
 
