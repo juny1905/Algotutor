@@ -1,16 +1,18 @@
 #include "viewcode.h"
 #include "uisub.h"
 #include "ncurses.h"
+
 void currentLine(int _y, int _x,int _y_limit, int _x_limit, int line)
 {
-	initscr();
-	start_color();
-	init_pair(7,COLOR_YELLOW,COLOR_BLUE);
-	attron(COLOR_PAIR(7));
+	//initscr();
+	//start_color();
+	init_pair(1,COLOR_WHITE,COLOR_BLACK);
+	attron(COLOR_PAIR(1));
 	char *info = (char *)malloc(sizeof(info)*50);
 	sprintf(info,"< Current Line : %d [%d,%d] >",line,_y_limit,_x_limit);
 	mvaddstr(_y,_x,info);
 	attroff(COLOR_PAIR(7));
+	//refresh();
 }
 void printPara(int _y, int _x, int _y_limit, int _x_limit, int line, LINE *para)
 {

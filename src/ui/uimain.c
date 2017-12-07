@@ -30,7 +30,7 @@ int uiMain(int *_xlimit, int *_ylimit, int *_menuCur, int *_maxMenu, int *_globa
 	//int menuCur = 0;
 	//int maxMenu = 5;
 	int showFlag = TRUE;
-	int dummy = 0;
+	//int dummy = 0;
 
 	/*
 	struct category *cur = NULL;
@@ -66,13 +66,13 @@ int uiMain(int *_xlimit, int *_ylimit, int *_menuCur, int *_maxMenu, int *_globa
 	(*_globalState) = IDLE;
 	while(1)
 	{
-		dummy = (dummy+1)%100;
 		if((*_globalState) == STRT && \
 		   (*_keyFlag) == KEY_FLAG_ENTER )  
 		{
 			//(*_globalState) = cursor_select(&menuCur, _cat_head);
 			showMenu(maxRow,maxCol,(*_menuCur),categoryNum,(*_cat_head));
 			(*_maxMenu) = countCategory((*_cat_head));
+			refresh();
 			(*_keyFlag) = KEY_FLAG_OFF;
 		}
 		else if((*_globalState) == DIRS && \
@@ -81,12 +81,14 @@ int uiMain(int *_xlimit, int *_ylimit, int *_menuCur, int *_maxMenu, int *_globa
 			//(*_globalState) = cursor_select(&menuCur, _cat_head);
 			showMenu(maxRow,maxCol,(*_menuCur),categoryNum,(*_cat_head));
 			(*_maxMenu) = countCategory((*_cat_head));
+			refresh();
 			(*_keyFlag) = KEY_FLAG_OFF;
 		}
 		else if((*_globalState) == EVENT && \
 			(*_keyFlag) == KEY_FLAG_ENTER)
 		{
 			//clearWorkspace(maxRow,maxCol,CODE_VIEW_PART);
+			
 			(*_keyFlag) = KEY_FLAG_OFF;
 		}
 		else if((*_globalState) == -2)

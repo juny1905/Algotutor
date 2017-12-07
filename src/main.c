@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
 
 #define MAX_THREADS 4
 #define DOC_DIR "./doc/"
@@ -58,7 +59,10 @@ void *code_view(void *_arg)
 			{
 				seqNum++;
 				keyFlag = KEY_FLAG_OFF;
-			}	
+			}
+
+			refresh();
+			sleep(1);
 		}	
 		else if(globalState == EXIT)
 		{
