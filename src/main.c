@@ -43,11 +43,12 @@ void *user_interface(void *_arg)
 void *code_view(void *_arg)
 {
 	LINE *para = (LINE *)malloc(sizeof(LINE));
-	para = ReadFile(catHead->cat_dir);
 	while(TRUE)
 	{
-		if(globalState == EVENT)
+		if(globalState == EVENT && keyFlag == KEY_FLAG_ENTER)
 		{
+			para = ReadFile(catHead->cat_dir);
+
 			clearWorkspace(ylimit,xlimit,CODE_VIEW_PART);
 			clearWorkspace(ylimit,xlimit,COMMENT_PART);
 			printComm(2,ylimit-3,seqNum,para);

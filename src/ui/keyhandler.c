@@ -28,14 +28,14 @@ void keyHandler(int *_menuCur, int *_maxMenu, int *_state, int *_keyFlag, struct
 			case KEY_UP:
 			{	
 				/* less than EVENT */
-				if((*_state) < 3)
+				if((*_state) < EVENT)
 				{
 					cursor_up(_menuCur, _maxMenu);
 					(*_keyFlag) = KEY_FLAG_UP;
 				}
 
 				/* doing EVENT */
-				if((*_state) == 4)
+				if((*_state) == EVENT)
 				{
 					// page scrolling?
 				}
@@ -45,14 +45,14 @@ void keyHandler(int *_menuCur, int *_maxMenu, int *_state, int *_keyFlag, struct
 			case KEY_DOWN:	
 			{
 				/* less than EVENT */
-				if((*_state) < 3)
+				if((*_state) < EVENT)
 				{
 					cursor_down(_menuCur, _maxMenu);
 					(*_keyFlag) = KEY_FLAG_DOWN;
 				}
 
 				/* doing EVENT */
-				if((*_state) == 4)
+				if((*_state) == EVENT)
 				{
 					// page scrolling?
 				}
@@ -71,24 +71,29 @@ void keyHandler(int *_menuCur, int *_maxMenu, int *_state, int *_keyFlag, struct
 			{
 				/* IDLE */
 				/* selected START and Directory */
-				if((*_state) == 0 ||\
-				   (*_state) == 1 ||\
-				   (*_state) == 2)
+				if((*_state) == IDLE ||\
+				   (*_state) == STRT ||\
+				   (*_state) == DIRS)
 				{
+					//printf("before change : %d\n",(*_state));
 					(*_state)\
 					= cursor_select(_menuCur, _cat_head);
 					(*_keyFlag) = KEY_FLAG_ENTER;
+					
+					// test code
+					//printf("after change : %d\n",(*_state));
 				}
 				/* selected Event */
-				else if((*_state) == 3)
+				else if((*_state) == EVENT)
 				{
 					// do something..?
 				}
 				/* selected EXIT */
-				else if((*_state) == -2)
+				else if((*_state) == EXIT)
 				{
 					// exit program
 				}
+				break;
 			}
 
 		}

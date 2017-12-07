@@ -45,7 +45,7 @@ int cursor_select(int *_menuCur, struct category **cur)
 		(*cur) = prev;
 		result = IDLE;
 	}
-	else if( (*cur)->action == STRT || (*cur)->action == DIRS )
+	else if( EXIT < (*cur)->action || (*cur)->action <= EVENT )
 	{	
 		result = (*cur)->action;
 		//mvaddstr(20,30,(*cur)->bottom->cat_name);

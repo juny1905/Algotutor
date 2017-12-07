@@ -216,15 +216,17 @@ int load_directory(char *_doc, struct category **_cat_head)
 					strlen(str_temp)+1);
 				strcpy(cur->next->bottom->cat_dir, str_temp);
 
-				/* debug code */
-				//printf("%s %s\n",cur->next->cat_name,cur->next->cat_dir);
-				//printf("%s %s\n",cur->next->bottom->cat_name,cur->next->bottom->cat_dir);
-
-
 				/* EVENT is 'Do something' */
 				cur->next->bottom->action = EVENT;
 				cur->next->bottom->bottom = NULL;
 				cur->next->bottom->next = NULL;
+				
+				/* debug code */
+				//printf("%d %s %s\n",cur->next->action,cur->next->cat_name,cur->next->cat_dir);
+				//printf("%d %s %s\n",cur->next->bottom->action,cur->next->bottom->cat_name,cur->next->bottom->cat_dir);
+
+
+
 			}
 		}
 		

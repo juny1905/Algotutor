@@ -30,6 +30,7 @@ int uiMain(int *_xlimit, int *_ylimit, int *_menuCur, int *_maxMenu, int *_globa
 	//int menuCur = 0;
 	//int maxMenu = 5;
 	int showFlag = TRUE;
+	int dummy = 0;
 
 	/*
 	struct category *cur = NULL;
@@ -65,6 +66,7 @@ int uiMain(int *_xlimit, int *_ylimit, int *_menuCur, int *_maxMenu, int *_globa
 	(*_globalState) = IDLE;
 	while(1)
 	{
+		dummy = (dummy+1)%100;
 		if((*_globalState) == STRT && \
 		   (*_keyFlag) == KEY_FLAG_ENTER )  
 		{
@@ -82,9 +84,9 @@ int uiMain(int *_xlimit, int *_ylimit, int *_menuCur, int *_maxMenu, int *_globa
 			(*_keyFlag) = KEY_FLAG_OFF;
 		}
 		else if((*_globalState) == EVENT && \
-			(*_keyFlag) == KEY_FLAG_EVENT)
+			(*_keyFlag) == KEY_FLAG_ENTER)
 		{
-			clearWorkspace(maxRow,maxCol,CODE_VIEW_PART);
+			//clearWorkspace(maxRow,maxCol,CODE_VIEW_PART);
 			(*_keyFlag) = KEY_FLAG_OFF;
 		}
 		else if((*_globalState) == -2)
@@ -102,6 +104,8 @@ int uiMain(int *_xlimit, int *_ylimit, int *_menuCur, int *_maxMenu, int *_globa
 			//cursor_down(&menuCur, &maxMenu);
 			(*_keyFlag) = KEY_FLAG_OFF;
 		}
+
+		//sleep(1);
 	}
 
 	/* Exit */
