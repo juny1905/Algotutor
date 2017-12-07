@@ -12,6 +12,12 @@ void printComm(int _y, int _x, int line,  LINE *para)
 		CUR = CUR->NEXT;
 	}
 }
+void currentLine(int _y, int _x, int line)
+{
+	char *info = (char *)malloc(sizeof(info)*30);
+	sprintf(info,"Current Line : %d",line);
+	mvaddstr(_y,_x,info);
+}
 void printPara(int _y, int _x, int _y_limit, int _x_limit, int line, LINE *para)
 {
 	LINE *CUR = para;
@@ -25,13 +31,11 @@ void printPara(int _y, int _x, int _y_limit, int _x_limit, int line, LINE *para)
 		{
 			if(CUR->text[j] == '\0') break;
 			mvaddch(_y + i,_x + j,CUR->text[j]); // From the library 'cursors'
-			// printf("%c",CUR->text[j]); // for test
 		}
 		if(CUR->NEXT == NULL)
 		{
 			break;
 		}
-		// printf("\n");
 		CUR = CUR->NEXT;
 	}
 }
