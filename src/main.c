@@ -44,18 +44,20 @@ void *user_interface(void *_arg)
 void *code_view(void *_arg)
 {
 	LINE *para = (LINE *)malloc(sizeof(LINE));
+	int line_para = 0;
 	while(TRUE)
 	{
 		if(globalState == EVENT && keyFlag == KEY_FLAG_ENTER)
 		{
 			para = ReadFile(catHead->cat_dir);
+			line_para = countPara(para);
 			keyFlag = KEY_FLAG_OFF;	
 		}
 		else if(globalState == EVENT)
 		{
 			currentLine(0,3,ylimit,xlimit,seqNum);
 			printPara(3,2,ylimit,xlimit,seqNum,para);
-			if( keyFlag == KEY_FLAG_ENTER )
+			if( keyFlag == KEY_FLAG_ENTER && seqNum != line_para)
 			{
 				seqNum++;
 				keyFlag = KEY_FLAG_OFF;
