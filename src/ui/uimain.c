@@ -89,7 +89,7 @@ int uiMain(int *_xlimit, int *_ylimit, int *_menuCur, int *_maxMenu, int *_globa
 		{
 			//clearWorkspace(maxRow,maxCol,CODE_VIEW_PART);
 			
-			(*_keyFlag) = KEY_FLAG_OFF;
+			//(*_keyFlag) = KEY_FLAG_OFF;
 		}
 		else if((*_globalState) == -2)
 		{
