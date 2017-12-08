@@ -54,7 +54,7 @@ void *code_view(void *_arg)
 		else if(globalState == EVENT)
 		{
 			currentLine(0,3,ylimit,xlimit,seqNum);
-			printPara(3,2,ylimit,xlimit,seqNum,para);
+			printPara(2,1,ylimit,xlimit,seqNum,para);
 			if( keyFlag == KEY_FLAG_ENTER )
 			{
 				seqNum++;
@@ -68,7 +68,6 @@ void *code_view(void *_arg)
 		{
 			clearWorkspace(ylimit,xlimit,CODE_VIEW_PART);
 			clearWorkspace(ylimit,xlimit,COMMENT_PART);
-
 			seqNum = 0;
 			break;
 		}
