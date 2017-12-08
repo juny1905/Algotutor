@@ -26,7 +26,7 @@ int menuCur = 0;
 int maxMenu = 3;
 int globalState = INIT;
 int keyFlag = KEY_FLAG_OFF;
-
+int codeLoaded = 0;
 int seqNum = 0; // To indicate current code squence;
 
 struct category *catHead = NULL;
@@ -46,12 +46,13 @@ void *code_view(void *_arg)
 	LINE *para = (LINE *)malloc(sizeof(LINE));
 	while(TRUE)
 	{
-		if(globalState == EVENT && keyFlag == KEY_FLAG_ENTER)
+		if(globalState == EVENT && keyFlag == KEY_FLAG_ENTER && codeLoaded == 0)
 		{
 			para = ReadFile(catHead->cat_dir);
-			keyFlag = KEY_FLAG_OFF;	
+			keyFlag = KEY_FLAG_OFF;
+			codeLoaded = 1;
 		}
-		else if(globalState == EVENT)
+		else if(globalState == EVENT && codeLoaded == 1)
 		{
 			currentLine(0,3,ylimit,xlimit,seqNum);
 			printPara(2,1,ylimit,xlimit,seqNum,para);
@@ -59,16 +60,18 @@ void *code_view(void *_arg)
 			{
 				seqNum++;
 				keyFlag = KEY_FLAG_OFF;
+				clearWorkspace(ylimit,xlimit,CODE_VIEW_PART);
 			}
-
+			
 			refresh();
-			sleep(1);
+			// sleep(1);
 		}	
 		else if(globalState == EXIT)
 		{
 			clearWorkspace(ylimit,xlimit,CODE_VIEW_PART);
 			clearWorkspace(ylimit,xlimit,COMMENT_PART);
 			seqNum = 0;
+			codeLoaded = 0;
 			break;
 		}
 	}
