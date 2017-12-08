@@ -7,34 +7,35 @@ int countPara(LINE *para)
 	LINE *CUR = para;
 	while(CUR != 0)
 	{
-		i++;
+		i = CUR->line_index;
 		CUR = CUR->NEXT;
 	}
 	return i;
 }
 void currentLine(int _y, int _x,int _y_limit, int _x_limit, int line)
 {
-	init_pair(1,COLOR_YELLOW,COLOR_BLUE);
+	init_pair(1,COLOR_BLUE,COLOR_YELLOW);
 	attron(COLOR_PAIR(1));
 	char *info = (char *)malloc(sizeof(info)*50);
 	sprintf(info,"< Current Line : %d [%d,%d] >",line,_y_limit,_x_limit);
 	mvaddstr(_y,_x,info);
+	attroff(COLOR_PAIR(1));
 }
 void printPara(int _y, int _x, int _y_limit, int _x_limit, int line, LINE *para)
 {
 	LINE *CUR = para;
 	int i,j;
 
-	// How can I highlight the specific 'line' ?
+	mvaddstr(_y + line, 1, ">>");
 	for(i=0;i<_y_limit;i++)
 	{
 		if(CUR->type == COM_LINE)
 			CUR = CUR->NEXT;
-
+		
 		for(j=0;j<_x_limit;j++)
 		{
 			if(CUR->text[j] == '\0') break;
-			mvaddch(_y + i,_x + j,CUR->text[j]); // From the library 'cursors'
+			mvaddch(_y + i,_x + j + 3,CUR->text[j]); // From the library 'cursors'
 		}
 
 		if(CUR->NEXT == NULL)

@@ -26,7 +26,7 @@ int menuCur = 0;
 int maxMenu = 3;
 int globalState = INIT;
 int keyFlag = KEY_FLAG_OFF;
-
+int codeLoaded = 0;
 int seqNum = 0; // To indicate current code squence;
 
 struct category *catHead = NULL;
@@ -47,31 +47,34 @@ void *code_view(void *_arg)
 	int line_para = 0;
 	while(TRUE)
 	{
-		if(globalState == EVENT && keyFlag == KEY_FLAG_ENTER)
+		if(globalState == EVENT && keyFlag == KEY_FLAG_ENTER && codeLoaded == 0)
 		{
 			para = ReadFile(catHead->cat_dir);
 			line_para = countPara(para);
-			keyFlag = KEY_FLAG_OFF;	
+			keyFlag = KEY_FLAG_OFF;
+			codeLoaded = 1;
 		}
-		else if(globalState == EVENT)
+		else if(globalState == EVENT && codeLoaded == 1)
 		{
 			currentLine(0,3,ylimit,xlimit,seqNum);
-			printPara(3,2,ylimit,xlimit,seqNum,para);
+			printPara(2,1,ylimit,xlimit,seqNum,para);
 			if( keyFlag == KEY_FLAG_ENTER && seqNum != line_para)
 			{
 				seqNum++;
 				keyFlag = KEY_FLAG_OFF;
+				clearWorkspace(ylimit,xlimit,CODE_VIEW_PART);
 			}
 
 			refresh();
-			sleep(1);
+			// sleep(1);
 		}	
-		else if(globalState == EXIT)
+		else if(globalState == EXIT || seqNum > line_para)
 		{
 			clearWorkspace(ylimit,xlimit,CODE_VIEW_PART);
 			clearWorkspace(ylimit,xlimit,COMMENT_PART);
-
 			seqNum = 0;
+			codeLoaded = 0;
+			globalState = INIT;
 			break;
 		}
 	}
@@ -89,7 +92,7 @@ void *keyhandler(void *_arg)
 	pthread_exit(NULL);
 }
 
-int main(int argc, char *argv)
+int main(int argc, char **argv)
 {
 	pthread_t threadPool[MAX_THREADS];
 

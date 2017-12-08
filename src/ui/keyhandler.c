@@ -87,6 +87,7 @@ void keyHandler(int *_menuCur, int *_maxMenu, int *_state, int *_keyFlag, struct
 				else if((*_state) == EVENT)
 				{
 					// do something..?
+					(*_keyFlag) = KEY_FLAG_ENTER;
 				}
 				/* selected EXIT */
 				else if((*_state) == EXIT)
