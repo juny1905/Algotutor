@@ -15,13 +15,13 @@ int countPara(LINE *para)
 void printComm(int _y, int _x, int line, LINE *para)
 {
 		LINE *CUR = para;
-		if(CUR->line_index == line && CUR->type == COM_LINE)
+		while(CUR != NULL)
 		{
-				mvaddstr(_y,_x,CUR->text);
-		}
-		else
-		{
-				CUR = CUR->NEXT;
+			if(CUR->line_index == line && CUR->type == COM_LINE)
+			{
+				mvaddstr(_y,_x,CUR->text);	
+			}
+			CUR = CUR->NEXT;
 		}
 }	
 void currentLine(int _y, int _x,int _y_limit, int _x_limit, int line)

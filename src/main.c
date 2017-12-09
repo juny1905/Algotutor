@@ -58,7 +58,7 @@ void *code_view(void *_arg)
 		{
 			currentLine(0,3,ylimit,xlimit,seqNum);
 			printPara(2,2,ylimit,xlimit,seqNum,para);
-			printComm(ylimit,1,seqNum,para);
+			printComm(ylimit-3,1,seqNum,para);
 			if(seqNum == line_para)
 			{
 					globalState = EXIT;
@@ -68,6 +68,7 @@ void *code_view(void *_arg)
 				seqNum++;
 				keyFlag = KEY_FLAG_OFF;
 				clearWorkspace(ylimit,xlimit,CODE_VIEW_PART);
+				clearWorkspace(ylimit,xlimit,COMMENT_PART);
 			}
 			
 			refresh();
