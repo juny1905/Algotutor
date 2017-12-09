@@ -19,6 +19,7 @@
 #include "viewcode.h"
 #include "readcode.h"
 
+#include "simulview.h"
 
 int xlimit = 0;
 int ylimit = 0;
@@ -83,6 +84,7 @@ void *code_view(void *_arg)
 
 void *simul_view(void *_arg)
 {
+	simulMain(&catHead, ylimit, xlimit, &globalState, &seqNum);
 	pthread_exit(NULL);
 }
 
