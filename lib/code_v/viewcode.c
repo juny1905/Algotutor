@@ -1,7 +1,29 @@
 #include "viewcode.h"
 #include "uisub.h"
 #include "ncurses.h"
-
+int countPara(LINE *para)
+{
+	int i=0;
+	LINE *CUR = para;
+	while(CUR != 0)
+	{
+		i = CUR->line_index;
+		CUR = CUR->NEXT;
+	}
+	return i;
+}
+void printComm(int _y, int _x, int line, LINE *para)
+{
+		LINE *CUR = para;
+		if(CUR->line_index == line && CUR->type == COM_LINE)
+		{
+				mvaddstr(_y,_x,CUR->text);
+		}
+		else
+		{
+				CUR = CUR->NEXT;
+		}
+}	
 void currentLine(int _y, int _x,int _y_limit, int _x_limit, int line)
 {
 	init_pair(1,COLOR_BLUE,COLOR_YELLOW);
@@ -15,16 +37,16 @@ void printPara(int _y, int _x, int _y_limit, int _x_limit, int line, LINE *para)
 {
 	LINE *CUR = para;
 	int i,j;
-
 	mvaddstr(_y + line, 1, ">>");
 	for(i=0;i<_y_limit;i++)
 	{
-		if(CUR->type == COM_LINE)
-			CUR = CUR->NEXT;
-		
+		if(CUR->type == COM_LINE) CUR=CUR->NEXT;
 		for(j=0;j<_x_limit;j++)
 		{
-			if(CUR->text[j] == '\0') break;
+			if(CUR->text[j] == '\0')
+			{
+					break;
+			}
 			mvaddch(_y + i,_x + j + 3,CUR->text[j]); // From the library 'cursors'
 		}
 

@@ -3,8 +3,9 @@
 
 #include "../code_r/readcode.h"
 
+int countPara(LINE *para);
 void currentLine(int _y, int _x, int _y_limit, int _x_limit, int line);
 void printPara(int _y, int _x, int _y_limit, int _x_limit, int line, LINE *para);
 void printScrolled(int _y, int _x, int _y_limit, int _x_limit, LINE *para);
-
+void printComm(int _y, int _x, int line, LINE *para);
 #endif // CODE_VIEW_H

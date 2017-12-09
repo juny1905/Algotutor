@@ -44,19 +44,26 @@ void *user_interface(void *_arg)
 void *code_view(void *_arg)
 {
 	LINE *para = (LINE *)malloc(sizeof(LINE));
+	int line_para = 0;
 	while(TRUE)
 	{
 		if(globalState == EVENT && keyFlag == KEY_FLAG_ENTER && codeLoaded == 0)
 		{
 			para = ReadFile(catHead->cat_dir);
+			line_para = countPara(para);
 			keyFlag = KEY_FLAG_OFF;
 			codeLoaded = 1;
 		}
 		else if(globalState == EVENT && codeLoaded == 1)
 		{
 			currentLine(0,3,ylimit,xlimit,seqNum);
-			printPara(2,1,ylimit,xlimit,seqNum,para);
-			if( keyFlag == KEY_FLAG_ENTER )
+			printPara(2,2,ylimit,xlimit,seqNum,para);
+			printComm(ylimit,1,seqNum,para);
+			if(seqNum == line_para)
+			{
+					globalState = EXIT;
+			}	
+			if( keyFlag == KEY_FLAG_ENTER && seqNum != line_para)
 			{
 				seqNum++;
 				keyFlag = KEY_FLAG_OFF;
@@ -72,6 +79,7 @@ void *code_view(void *_arg)
 			clearWorkspace(ylimit,xlimit,COMMENT_PART);
 			seqNum = 0;
 			codeLoaded = 0;
+			globalState = INIT;
 			break;
 		}
 	}
@@ -89,7 +97,7 @@ void *keyhandler(void *_arg)
 	pthread_exit(NULL);
 }
 
-int main(int argc, char *argv)
+int main(int argc, char **argv)
 {
 	pthread_t threadPool[MAX_THREADS];
 
