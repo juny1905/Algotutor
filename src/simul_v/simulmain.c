@@ -6,7 +6,7 @@
 
 void simulMain(struct category **_cur, int _ylimit, int _xlimit, int *_state ,int *_seqNum, int *viewFlag)
 {
-	int prev_seqNum = 0;
+	//int prev_seqNum = 0;
 
 	while((*_state) > EXIT)
 	{
