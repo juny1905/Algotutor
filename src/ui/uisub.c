@@ -39,7 +39,7 @@ void clearWorkspace(int _maxRow, int _maxCol, int _option)
 	{
 		for(int i=1; i<(_maxRow-5); i++)
 		{
-			for(int j=(_maxCol/2); j<(_maxCol-1); j++)
+			for(int j=(_maxCol/2+1); j<(_maxCol-1); j++)
 			{
 				mvaddch(i,j,' ');
 			}

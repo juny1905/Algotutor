@@ -3,7 +3,7 @@ CFLAGS = -g -Wall -fPIC -c
 OBJ = ./printf_v.o ./simulmain.o
 LIB_DIR = ../../lib
 LSIM_DIR = ../../lib/simul_v
-INC_DIR = ../../inc/simul_v
+INC_DIR = -I../../inc/simul_v -I../../inc/ui
 
 .PHONY: clean
 
@@ -20,7 +20,7 @@ INC_DIR = ../../inc/simul_v
 #	$(CC) $(CFLAGS) $< -I../../inc/ui/
 
 %.o:%.c
-	$(CC) $(CFLAGS) -o $@ $< -I$(INC_DIR)
+	$(CC) $(CFLAGS) -o $@ $< $(INC_DIR)
 
 clean :
 	/bin/rm -f ./*.o
