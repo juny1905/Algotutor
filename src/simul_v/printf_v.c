@@ -11,8 +11,8 @@ void printfView(int _xlimit, int _ylimit, int _seqNum)
 		mvaddch(_xlimit/2,i,'-');
 	}
 
-	refresh();
-	sleep(1);
+	//refresh();
+	//sleep(1);
 
 	return;
 

@@ -29,6 +29,7 @@ int globalState = INIT;
 int keyFlag = KEY_FLAG_OFF;
 int codeLoaded = 0;
 int seqNum = 0; // To indicate current code squence;
+int viewFlag = FALSE;
 
 struct category *catHead = NULL;
 
@@ -55,19 +56,23 @@ void *code_view(void *_arg)
 			keyFlag = KEY_FLAG_OFF;
 			codeLoaded = 1;
 		}
-		else if(globalState == EVENT && codeLoaded == 1)
+		else if(globalState == EVENT && codeLoaded == 1 )
 		{
+			while(viewFlag == TRUE);
+
 			currentLine(0,3,ylimit,xlimit,seqNum);
 			printPara(2,1,ylimit,xlimit,seqNum,para);
-			if( keyFlag == KEY_FLAG_ENTER && seqNum != line_para)
+			if( seqNum != line_para && keyFlag == KEY_FLAG_ENTER)
 			{
 				seqNum++;
 				keyFlag = KEY_FLAG_OFF;
 				clearWorkspace(ylimit,xlimit,CODE_VIEW_PART);
 			}
 
-			refresh();
+			//refresh();
 			// sleep(1);
+			/* for the synchronization */
+			viewFlag = TRUE;
 		}	
 		else if(globalState == EXIT || seqNum > line_para)
 		{
@@ -84,7 +89,7 @@ void *code_view(void *_arg)
 
 void *simul_view(void *_arg)
 {
-	simulMain(&catHead, ylimit, xlimit, &globalState, &seqNum);
+	simulMain(&catHead, ylimit, xlimit, &globalState, &seqNum, &viewFlag);
 	pthread_exit(NULL);
 }
 

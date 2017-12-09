@@ -27,7 +27,7 @@ struct category
 #ifndef SIMUL_VIEW_H
 #define SIMUL_VIEW_H
 
-void simulMain(struct category **_cur, int _ylimit, int _xlimit, int *_state, int *_seqNum);
+void simulMain(struct category **_cur, int _ylimit, int _xlimit, int *_state, int *_seqNum, int *viewFlag);
 
 void printfView(int _ylimit, int _xlimit, int _seqNum);
 
