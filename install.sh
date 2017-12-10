@@ -16,6 +16,16 @@ else
 	exit 0
 fi
 
+# installing required packages
+echo "[install] ncurses-dev package"
+
+apt-get --assume-yes install ncurses-dev >> /dev/null
+
+echo "[complete] ncurses-dev package"
+
+# call make
+make -s >> /dev/null
+
 # setting Library Directory
 # need sudo command!
 echo "[set] library directory"
@@ -35,16 +45,6 @@ echo $LD_LIBRARY_PATH
 END
 
 echo "[complete] library directory"
-
-# installing required packages
-echo "[install] ncurses-dev package"
-
-apt-get --assume-yes install ncurses-dev >> /dev/null
-
-echo "[complete] ncurses-dev package"
-
-# call make
-
-
+echo "[complete] installation"
 
 exit 0

@@ -21,25 +21,12 @@
 int uiMain(int *_xlimit, int *_ylimit, int *_menuCur, int *_maxMenu, int *_globalState, int *_keyFlag, struct category **_cat_head)
 {
 	//char doc_dir[20] = {0,};
-	struct category *cur = (*_cat_head);
+	//struct category *cur = (*_cat_head);
 
 	int maxRow = 0;
 	int maxCol = 0;
 	int categoryNum = 0;
-	int maxCat = 5;
-	//int menuCur = 0;
-	//int maxMenu = 5;
-	int showFlag = TRUE;
-	//int dummy = 0;
-
-	/*
-	struct category *cur = NULL;
-	struct category *cat_head = (struct category *)malloc(sizeof(struct category));
-	cat_head->action = 0;
-	cat_head->bottom = NULL;
-	cat_head->next = NULL;
-	*/
-
+	
 	/* Curses Initializations */
 	init_ui();
 

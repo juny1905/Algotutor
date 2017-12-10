@@ -12,7 +12,4 @@ LIB_DIR = -L../lib/ui -L../lib/simul_v -L../lib/code_r -L../lib/code_v
 #$(LIB_DIR)/$(LIB_FILES) : 
 
 clean :
-	/bin/rm -f *.o
-	/bin/rm -f *.so
-	/bin/rm -f *.so.1
-	/bin/rm -f *.so.1.0
+	/bin/rm -f ../algotutor

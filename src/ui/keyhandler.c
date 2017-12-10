@@ -22,6 +22,11 @@ void keyHandler(int *_menuCur, int *_maxMenu, int *_state, int *_keyFlag, struct
 
 	while((key = getch()) != 27)
 	{
+		if(*_state == EXIT)
+		{
+			break;
+		}
+
 		switch(key)
 		{
 
