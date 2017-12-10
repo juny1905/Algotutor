@@ -3,10 +3,11 @@
 int main()
 //@ The program will execute the code in main function
 {
-	int a = 9; // 'int' can store 4 byte of integer value (in x64)
-	//@ You can declare the variable by (TYPE) (NAME) = (VALUE);
-	
-	printf("%d",a); // %d will be replaced by integer 'd'
+	int a = 9;
+	// 'int' can store 4 byte of integer value (in x64)
+	//@ You can declare the variable by (TYPE) (NAME) = (VALUE);	
+	printf("%d",a);
+	// %d will be replaced by integer 'd'
 	//@ You can print the variable by '%d'
 
 	return 0;
