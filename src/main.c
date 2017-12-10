@@ -53,6 +53,7 @@ void *code_view(void *_arg)
 		{
 			para = ReadFile(catHead->cat_dir);
 			line_para = countPara(para);
+			clearWorkspace(xlimit,ylimit,CODE_VIEW_PART);
 			keyFlag = KEY_FLAG_OFF;
 			codeLoaded = 1;
 		}
@@ -61,11 +62,11 @@ void *code_view(void *_arg)
 			while(viewFlag == TRUE);
 
 			currentLine(0,3,ylimit,xlimit,seqNum);
-			printPara(2,2,ylimit,xlimit,seqNum,para);
+			printPara(2,2,xlimit,ylimit,seqNum,para);
 			printComm(ylimit-3,1,seqNum,para);
 			if(seqNum == line_para)
 			{
-					globalState = EXIT;
+				globalState = EXIT;
 			}	
 			if( keyFlag == KEY_FLAG_ENTER && seqNum != line_para)
 			{
@@ -74,8 +75,8 @@ void *code_view(void *_arg)
 			
 				seqNum++;
 				keyFlag = KEY_FLAG_OFF;
-				clearWorkspace(ylimit,xlimit,CODE_VIEW_PART);
-				clearWorkspace(ylimit,xlimit,COMMENT_PART);
+				clearWorkspace(xlimit,ylimit,CODE_VIEW_PART);
+				//clearWorkspace(xlimit,ylimit,COMMENT_PART);
 			}
 
 			// sleep(1);
@@ -84,8 +85,10 @@ void *code_view(void *_arg)
 		}	
 		else if(globalState == EXIT)
 		{
-			clearWorkspace(ylimit,xlimit,CODE_VIEW_PART);
-			clearWorkspace(ylimit,xlimit,COMMENT_PART);
+			clearWorkspace(xlimit,ylimit,CODE_VIEW_PART);
+			//clearWorkspace(xlimit,ylimit,COMMENT_PART);
+			//clearWorkspace(ylimit,xlimit,CODE_VIEW_PART);
+			//clearWorkspace(ylimit,xlimit,COMMENT_PART);
 			seqNum = 0;
 			codeLoaded = 0;
 			globalState = INIT;

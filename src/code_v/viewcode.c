@@ -38,14 +38,18 @@ void printPara(int _y, int _x, int _y_limit, int _x_limit, int line, LINE *para)
 	LINE *CUR = para;
 	int i,j;
 	mvaddstr(_y + line, 1, ">>");
-	for(i=0;i<_y_limit;i++)
+	for(i=0;i<(_y_limit-5);i++)
 	{
-		if(CUR->type == COM_LINE) CUR=CUR->NEXT;
-		for(j=0;j<_x_limit;j++)
+		if(CUR->type == COM_LINE)
 		{
-			if(CUR->text[j] == '\0')
+			CUR=CUR->NEXT;
+		}
+
+		for(j=0;j<(_x_limit/2-6);j++)
+		{
+			if(CUR->text[j] == '\0' || CUR->text[j] == '\n')
 			{
-					break;
+				break;
 			}
 			mvaddch(_y + i,_x + j + 3,CUR->text[j]); // From the library 'cursors'
 		}
