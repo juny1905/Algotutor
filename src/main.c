@@ -83,15 +83,16 @@ void *code_view(void *_arg)
 			/* for the synchronization */
 			viewFlag = TRUE;
 		}	
-		else if(globalState == EXIT)
+		
+		if(globalState == EXIT)
 		{
-			clearWorkspace(xlimit,ylimit,CODE_VIEW_PART);
+			//clearWorkspace(xlimit,ylimit,CODE_VIEW_PART);
 			//clearWorkspace(xlimit,ylimit,COMMENT_PART);
 			//clearWorkspace(ylimit,xlimit,CODE_VIEW_PART);
 			//clearWorkspace(ylimit,xlimit,COMMENT_PART);
 			seqNum = 0;
 			codeLoaded = 0;
-			globalState = INIT;
+			//globalState = INIT;
 			break;
 		}
 	}

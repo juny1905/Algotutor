@@ -93,6 +93,8 @@ void keyHandler(int *_menuCur, int *_maxMenu, int *_state, int *_keyFlag, struct
 				else if((*_state) == EXIT)
 				{
 					// exit program
+					(*_state) = EXIT;
+					return;
 				}
 				break;
 			}
